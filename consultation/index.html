@@ -452,6 +452,119 @@ var ElementorProFrontendConfig = {"ajaxurl":"\/wwwlitetechai\/wp-admin\/admin-aj
 			/(trident|msie)/i.test(navigator.userAgent)&&document.getElementById&&window.addEventListener&&window.addEventListener("hashchange",function(){var t,e=location.hash.substring(1);/^[A-z0-9_-]+$/.test(e)&&(t=document.getElementById(e))&&(/^(?:a|select|input|button|textarea)$/i.test(t.tagName)||(t.tabIndex=-1),t.focus())},!1);
 			</script>
 				
+
+<style>
+.lite-contact-status {
+	color: #ffffff;
+	font-weight: 700;
+	margin: 16px 0 0;
+	min-height: 1.5em;
+}
+.lite-contact-status.is-success {
+	color: #7cf2ad;
+}
+.lite-contact-status.is-error {
+	color: #ffcf55;
+}
+.lite-contact-fallback {
+	margin: 8px 0 0;
+}
+.lite-contact-fallback a {
+	color: #ffffff;
+	font-weight: 700;
+	text-decoration: underline;
+}
+</style>
+<script id="lite-contact-web3forms">
+(function () {
+	const form = document.querySelector('form[data-lite-web3forms-contact="true"]');
+	if (!form) return;
+	let status = form.querySelector('.lite-contact-status');
+	if (!status) {
+		status = document.createElement('p');
+		status.className = 'lite-contact-status';
+		status.setAttribute('role', 'status');
+		status.setAttribute('aria-live', 'polite');
+		form.appendChild(status);
+	}
+	if (!form.querySelector('.lite-contact-fallback')) {
+		const fallback = document.createElement('p');
+		fallback.className = 'lite-contact-fallback';
+		fallback.innerHTML = '<a href="mailto:viroopax.mirji@litetechai.com,viroopax15@gmail.com?subject=Lite%20Tech%20AI%20contact%20request">Email instead</a>';
+		form.appendChild(fallback);
+	}
+	const fallbackEmail = 'viroopax.mirji@litetechai.com,viroopax15@gmail.com';
+	const accessKey = 'f0e734aa-7188-4851-8bda-7e26a4d93faf';
+	function getValue(selector) {
+		const field = form.querySelector(selector);
+		return field ? field.value.trim() : '';
+	}
+	function setStatus(message, state) {
+		if (!status) return;
+		status.textContent = message;
+		status.classList.remove('is-success', 'is-error');
+		if (state) status.classList.add(state);
+	}
+	function mailtoFallback(name, email, message) {
+		const subject = encodeURIComponent('Lite Tech AI contact request');
+		const body = encodeURIComponent([
+			'Name: ' + name,
+			'Email: ' + email,
+			'',
+			'Message:',
+			message
+		].join('
+'));
+		window.location.href = 'mailto:' + fallbackEmail + '?subject=' + subject + '&body=' + body;
+	}
+	form.addEventListener('submit', async function (event) {
+		event.preventDefault();
+		event.stopPropagation();
+		if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+
+		const name = getValue('#form-field-name');
+		const email = getValue('#form-field-email');
+		const message = getValue('#form-field-message');
+		const submitButton = form.querySelector('button[type="submit"]');
+
+		if (!email || !message) {
+			setStatus('Please enter your email and message.', 'is-error');
+			return false;
+		}
+
+		const payload = new FormData();
+		payload.append('access_key', accessKey);
+		payload.append('subject', 'New Lite Tech AI contact request');
+		payload.append('from_name', 'Lite Tech AI Website');
+		payload.append('name', name);
+		payload.append('email', email);
+		payload.append('message', message);
+		payload.append('page', window.location.href);
+
+		try {
+			setStatus('Sending your message...', '');
+			if (submitButton) submitButton.disabled = true;
+			const response = await fetch('https://api.web3forms.com/submit', {
+				method: 'POST',
+				body: payload
+			});
+			const result = await response.json().catch(function () { return { success: false }; });
+			if (!response.ok || !result.success) throw new Error(result.message || 'Unable to send');
+			form.reset();
+			setStatus('Thanks, your message was sent.', 'is-success');
+		} catch (error) {
+			setStatus('Message could not be sent here. Opening email instead.', 'is-error');
+			mailtoFallback(name, email, message);
+		} finally {
+			if (submitButton) submitButton.disabled = false;
+		}
+		return false;
+	}, true);
+})();
+</script>
+
+
+
 <style>
 .lite-consultation-page { background: #071827; color: #ffffff; }
 .lite-consultation-shell { width: min(1120px, calc(100% - 36px)); margin: 0 auto; padding: 86px 0 92px; }
