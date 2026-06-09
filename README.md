@@ -1,19 +1,11 @@
-# Lite Tech AI Static Site
+# Lite Tech AI GitHub Pages Static Mirror
 
-This repository contains the clean static GitHub Pages version of Lite Tech AI.
+This folder is a GitHub Pages-ready version of the exact static mirror in
+`outputs/litetechai-option-c`.
 
-Public URLs are preserved under their existing paths, with shared assets in /assets.
+It is intended to be deployed at:
 
-## Restore point
+https://litetechai.com/
 
-Before the static cleanup, a git tag was created: pre-static-cleanup-2026-06-08. A zip backup was also saved in the Codex outputs folder for this session.
-
-## Local preview
-
-Run:
-
-```sh
-python3 -m http.server 8010
-```
-
-Then open http://127.0.0.1:8010/.
+The WordPress/Elementor asset paths are rooted at `/` so the site works from
+the custom domain root.
