@@ -18,8 +18,30 @@
   min-width: 560px;
 }
 
+.entry-content .smb-related-reading {
+  border: 1px solid #dbe3ec;
+  border-radius: 6px;
+  background: #f8fafc;
+  padding: 1rem 1.1rem;
+  margin: 1.4rem 0 1.8rem;
+  box-shadow: 0 5px 16px rgba(15, 23, 42, 0.04);
+}
+
+.entry-content .smb-related-reading h2,
+.entry-content .smb-related-reading h3 {
+  margin-top: 0;
+}
+
+.entry-content .smb-related-reading ul {
+  margin-bottom: 0;
+}
+
 @media (max-width: 767px) {
   .entry-content .wp-block-table table {
     min-width: 640px;
+  }
+
+  .entry-content .smb-related-reading {
+    padding: 0.9rem;
   }
 }
