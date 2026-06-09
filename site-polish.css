@@ -1,0 +1,25 @@
+@media (max-width: 767px) {
+  .elementor-nav-menu--dropdown[aria-hidden="true"] {
+    display: none !important;
+  }
+}
+
+.elementor-icon-list-text {
+  overflow-wrap: anywhere;
+}
+
+.entry-content .wp-block-table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.entry-content .wp-block-table table {
+  min-width: 560px;
+}
+
+@media (max-width: 767px) {
+  .entry-content .wp-block-table table {
+    min-width: 640px;
+  }
+}
