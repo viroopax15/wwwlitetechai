@@ -14,3 +14,5 @@ the custom domain root.
 
 - `/ai-factory-cost-calculator/` - neutral AI Factory inference cost calculator
   for GPU memory, storage growth, pipeline latency, and token economics.
+- `/data-storage-estimator/` - neutral high-performance storage sizing tool for
+  capacity, throughput, rack, power, BOM, export payloads, and assumptions.

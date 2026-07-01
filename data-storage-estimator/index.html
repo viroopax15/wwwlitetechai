@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Data Storage Estimates | Lite Tech AI</title>
+    <meta
+      name="description"
+      content="Size generic high-performance data storage configurations by capacity, throughput, protocol, term, rack footprint, power, and bill of materials."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Lite Tech AI home">
+          <span class="brand-mark">L</span>
+          <span>
+            <strong>Lite Tech AI</strong>
+            <small>Data Storage Estimates</small>
+          </span>
+        </a>
+        <nav class="topbar-actions" aria-label="Estimator navigation">
+          <a class="secondary-action" href="/ai-factory-cost-calculator/">AI Factory Calculator</a>
+          <button class="icon-button" type="button" id="resetButton" title="Reset inputs" aria-label="Reset inputs">
+            <span aria-hidden="true">R</span>
+          </button>
+          <button class="primary-action" type="button" id="findButton">Find Solutions</button>
+        </nav>
+      </header>
+
+      <section class="studio">
+        <aside class="input-panel" aria-label="Storage requirements">
+          <section class="panel-block">
+            <h1>Storage solution studio</h1>
+            <p>Estimate capacity, throughput, rack, power, and bill-of-materials requirements for a high-performance storage deployment.</p>
+          </section>
+
+          <section class="panel-block">
+            <label class="field-label" for="capacityPb">Effective capacity</label>
+            <div class="number-with-unit">
+              <input id="capacityPb" type="number" min="0" max="500" step="0.1" value="3" />
+              <span>PB</span>
+            </div>
+
+            <label class="field-label">Protocol</label>
+            <div class="segmented" role="group" aria-label="Storage protocol" id="protocolChoices">
+              <button type="button" data-value="s3" class="is-active">S3</button>
+              <button type="button" data-value="posix">POSIX</button>
+            </div>
+
+            <button class="perf-toggle" type="button" id="perfToggle">
+              <span>Performance</span>
+              <strong id="perfLabel">Medium · 8M</strong>
+            </button>
+            <div class="performance-panel" id="performancePanel">
+              <label class="field-label" for="objectSize">Object / file size</label>
+              <select id="objectSize">
+                <option value="small">Small · 4K</option>
+                <option value="medium" selected>Medium · 8M</option>
+                <option value="large">Large · 128M</option>
+              </select>
+            </div>
+
+            <div class="two-col">
+              <label>
+                <span>Read / GET</span>
+                <div class="number-with-unit">
+                  <input id="readGbps" type="number" min="0" max="5000" step="1" value="80" />
+                  <span>GB/s</span>
+                </div>
+              </label>
+              <label>
+                <span>Write / PUT</span>
+                <div class="number-with-unit">
+                  <input id="writeGbps" type="number" min="0" max="5000" step="1" value="40" />
+                  <span>GB/s</span>
+                </div>
+              </label>
+            </div>
+
+            <label class="field-label">Term</label>
+            <div class="segmented" role="group" aria-label="Subscription term" id="termChoices">
+              <button type="button" data-value="1">1 yr</button>
+              <button type="button" data-value="3" class="is-active">3 yr</button>
+              <button type="button" data-value="5">5 yr</button>
+            </div>
+
+            <label class="field-label">Deployment model</label>
+            <div class="segmented two" role="group" aria-label="Deployment model" id="deploymentChoices">
+              <button type="button" data-value="appliance" class="is-active">Integrated</button>
+              <button type="button" data-value="software">Software only</button>
+            </div>
+
+            <p class="inline-result" id="requirementSummary">3 PB usable · 80 GB/s read · 40 GB/s write · 3-year term</p>
+          </section>
+        </aside>
+
+        <section class="results-panel" aria-live="polite">
+          <div class="results-header">
+            <div>
+              <span class="eyebrow">Results</span>
+              <h2 id="resultTitle">Valid storage configurations</h2>
+              <p id="resultSubtitle">Run the estimator to compare solution options.</p>
+            </div>
+            <div class="status-pill" id="statusPill">Ready</div>
+          </div>
+
+          <div class="metrics-grid">
+            <article>
+              <span>Selected option</span>
+              <strong id="metricOption">--</strong>
+              <small id="metricDriver">Awaiting estimate</small>
+            </article>
+            <article>
+              <span>Usable range</span>
+              <strong id="metricCapacity">--</strong>
+              <small>Guaranteed to typical</small>
+            </article>
+            <article>
+              <span>Performance</span>
+              <strong id="metricPerf">--</strong>
+              <small>Read / write aggregate</small>
+            </article>
+            <article>
+              <span>Facilities</span>
+              <strong id="metricFacilities">--</strong>
+              <small>Rack units and power</small>
+            </article>
+          </div>
+
+          <nav class="tabs" aria-label="Result views">
+            <button type="button" class="is-active" data-tab="options">Options</button>
+            <button type="button" data-tab="tech">Tech Details</button>
+            <button type="button" data-tab="bom">BOM</button>
+            <button type="button" data-tab="report">Report</button>
+            <button type="button" data-tab="export">Export</button>
+            <button type="button" data-tab="docs">Docs</button>
+            <button type="button" data-tab="trace">Trace</button>
+            <button type="button" data-tab="settings">Settings</button>
+          </nav>
+
+          <div class="tab-panel" id="tabPanel">
+            <div class="empty-state">
+              <strong>Enter requirements to find matching configurations</strong>
+              <span>Capacity, throughput, or both can drive the estimate.</span>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
