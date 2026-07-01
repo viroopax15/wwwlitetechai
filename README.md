@@ -9,3 +9,8 @@ https://litetechai.com/
 
 The WordPress/Elementor asset paths are rooted at `/` so the site works from
 the custom domain root.
+
+## Sub-sites
+
+- `/ai-factory-cost-calculator/` - neutral AI Factory inference cost calculator
+  for GPU memory, storage growth, pipeline latency, and token economics.
