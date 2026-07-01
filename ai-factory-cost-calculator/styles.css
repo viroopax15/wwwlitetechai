@@ -242,6 +242,7 @@ output {
 }
 
 select,
+input[type="text"],
 input[type="number"] {
   width: 100%;
   min-height: 40px;
@@ -259,7 +260,7 @@ input[type="range"] {
 
 .segmented {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
   gap: 6px;
 }
 
@@ -300,6 +301,19 @@ input[type="range"] {
 .inline-result {
   color: var(--ink);
   font-weight: 700;
+}
+
+.custom-hardware {
+  display: none;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfd;
+}
+
+.custom-hardware.is-visible {
+  display: grid;
 }
 
 .two-col,

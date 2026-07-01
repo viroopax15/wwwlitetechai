@@ -8,20 +8,33 @@ const models = {
   "mistral-7b": { name: "Mistral 7B", weightGb: 14, layers: 32, hidden: 4096 },
   "qwen2-72b": { name: "Qwen 2 72B", weightGb: 144, layers: 80, hidden: 8192 },
   "falcon-40b": { name: "Falcon 40B", weightGb: 80, layers: 60, hidden: 8192 },
+  "nemotron3-nano-30b-a3b": { name: "NVIDIA Nemotron 3 Nano 30B-A3B NIM", weightGb: 60, layers: 48, hidden: 6144, activeParamsB: 3, context: "1M", kvScale: 0.72 },
+  "nemotron3-nano-omni-30b-a3b": { name: "NVIDIA Nemotron 3 Nano Omni 30B-A3B NIM", weightGb: 60, layers: 48, hidden: 6144, activeParamsB: 3, context: "multimodal", kvScale: 0.8 },
+  "nemotron3-super-120b-a12b": { name: "NVIDIA Nemotron 3 Super 120B-A12B NIM", weightGb: 240, layers: 80, hidden: 12288, activeParamsB: 12, context: "1M", kvScale: 0.9 },
+  "nemotron3-ultra-550b-a55b": { name: "NVIDIA Nemotron 3 Ultra 550B-A55B NIM", weightGb: 1100, layers: 96, hidden: 18432, activeParamsB: 55, context: "1M", kvScale: 1 },
+  "nemo-retriever-embed-300m": { name: "NeMo Retriever Llama Nemotron Embed 300M v2", weightGb: 3.5, layers: 24, hidden: 1536, category: "retriever", kvScale: 0.08 },
+  "nemo-retriever-embed-1b": { name: "NeMo Retriever Llama Nemotron Embed 1B v2", weightGb: 6.5, layers: 32, hidden: 2048, category: "retriever", kvScale: 0.1 },
+  "nemo-retriever-embed-vl-1b": { name: "NeMo Retriever Llama Nemotron Embed VL 1B v2", weightGb: 8.5, layers: 32, hidden: 2048, category: "retriever", kvScale: 0.12 },
+  "nemo-retriever-nv-embedqa-e5": { name: "NeMo Retriever NV-EmbedQA-E5 v5", weightGb: 2, layers: 24, hidden: 1024, category: "retriever", kvScale: 0.08 },
   "custom-140b": { name: "My model", weightGb: 140, layers: 72, hidden: 8192 }
 };
 
 const hardware = {
-  h100: { label: "H100 80GB", memoryGb: 80, warmTokPerSec: 145, coldReadGbps: 2.0, acceleratedReadGbps: 4.0 },
-  a100: { label: "A100 80GB", memoryGb: 80, warmTokPerSec: 82, coldReadGbps: 1.4, acceleratedReadGbps: 2.4 },
-  l40s: { label: "L40S 48GB", memoryGb: 48, warmTokPerSec: 44, coldReadGbps: 1.0, acceleratedReadGbps: 1.8 }
+  "dgx-h100": { label: "DGX/HGX H100 80GB", memoryGb: 80, warmTokPerSec: 145, coldReadGbps: 2.0, acceleratedReadGbps: 4.0, defaultGpus: 8, retrieverEmbedPerSec: 645, retrieverExtractPagesPerSec: 31, retrieverRerankPerSec: 498 },
+  "dgx-h200": { label: "DGX/HGX H200 141GB", memoryGb: 141, warmTokPerSec: 175, coldReadGbps: 2.6, acceleratedReadGbps: 4.8, defaultGpus: 8, retrieverEmbedPerSec: 760, retrieverExtractPagesPerSec: 34, retrieverRerankPerSec: 540 },
+  "dgx-b200": { label: "DGX B200 180GB", memoryGb: 180, warmTokPerSec: 255, coldReadGbps: 3.6, acceleratedReadGbps: 6.5, defaultGpus: 8, retrieverEmbedPerSec: 546, retrieverExtractPagesPerSec: 37, retrieverRerankPerSec: 532 },
+  "gb200-nvl72": { label: "GB200 NVL72", memoryGb: 186, warmTokPerSec: 285, coldReadGbps: 4.0, acceleratedReadGbps: 7.2, defaultGpus: 72, retrieverEmbedPerSec: 620, retrieverExtractPagesPerSec: 42, retrieverRerankPerSec: 610 },
+  a100: { label: "A100 80GB", memoryGb: 80, warmTokPerSec: 82, coldReadGbps: 1.4, acceleratedReadGbps: 2.4, defaultGpus: 8, retrieverEmbedPerSec: 509, retrieverExtractPagesPerSec: 21, retrieverRerankPerSec: 153 },
+  l40s: { label: "L40S 48GB", memoryGb: 48, warmTokPerSec: 44, coldReadGbps: 1.0, acceleratedReadGbps: 1.8, defaultGpus: 4, retrieverEmbedPerSec: 471, retrieverExtractPagesPerSec: 7.2, retrieverRerankPerSec: 186 },
+  "rtx-pro-6000": { label: "RTX PRO 6000 Blackwell", memoryGb: 96, warmTokPerSec: 120, coldReadGbps: 1.8, acceleratedReadGbps: 3.6, defaultGpus: 4, retrieverEmbedPerSec: 288, retrieverExtractPagesPerSec: 24, retrieverRerankPerSec: 233 }
 };
 
 const workloads = {
   rag: { label: "Enterprise RAG", hint: "RAG over internal knowledge, multi-turn Q&A, and audit logging.", recomputeNoFabric: 0.34, recomputeFabric: 0.05, hitNoFabric: 0.42, hitFabric: 0.9 },
   code: { label: "Code Assistant", hint: "Long context code generation with repository snippets and test logs.", recomputeNoFabric: 0.28, recomputeFabric: 0.06, hitNoFabric: 0.46, hitFabric: 0.86 },
   agent: { label: "Agentic Workflow", hint: "Tool calls, planning loops, scratch state, and long-lived session memory.", recomputeNoFabric: 0.42, recomputeFabric: 0.08, hitNoFabric: 0.35, hitFabric: 0.88 },
-  batch: { label: "Batch Processing", hint: "High-throughput offline runs with fewer conversational KV reuse events.", recomputeNoFabric: 0.18, recomputeFabric: 0.04, hitNoFabric: 0.5, hitFabric: 0.78 }
+  batch: { label: "Batch Processing", hint: "High-throughput offline runs with fewer conversational KV reuse events.", recomputeNoFabric: 0.18, recomputeFabric: 0.04, hitNoFabric: 0.5, hitFabric: 0.78 },
+  retriever: { label: "NeMo Retriever", hint: "Document extraction, embedding, indexing, reranking, and retrieval-augmented query service.", recomputeNoFabric: 0.22, recomputeFabric: 0.04, hitNoFabric: 0.48, hitFabric: 0.92 }
 };
 
 const precision = {
@@ -33,7 +46,7 @@ const precision = {
 const state = {
   workload: "rag",
   precision: "fp16",
-  hardware: "h100",
+  hardware: "dgx-h100",
   activeTab: "memory",
   hasRun: false,
   result: null
@@ -46,6 +59,21 @@ const money2 = new Intl.NumberFormat("en-US", { style: "currency", currency: "US
 
 function numberValue(id) {
   return Number(el(id).value || 0);
+}
+
+function getHardwareProfile() {
+  if (state.hardware !== "custom") return hardware[state.hardware];
+  return {
+    label: el("customHardwareLabel").value.trim() || "Custom BYO GPU",
+    memoryGb: numberValue("customMemoryGb"),
+    warmTokPerSec: numberValue("customTokPerSec"),
+    coldReadGbps: numberValue("customColdRead"),
+    acceleratedReadGbps: numberValue("customAccelRead"),
+    defaultGpus: numberValue("gpus"),
+    retrieverEmbedPerSec: Math.max(1, numberValue("customTokPerSec") * 2.2),
+    retrieverExtractPagesPerSec: Math.max(1, numberValue("customTokPerSec") / 5),
+    retrieverRerankPerSec: Math.max(1, numberValue("customTokPerSec") * 1.8)
+  };
 }
 
 function compactNumber(value, suffix = "") {
@@ -65,7 +93,7 @@ function formatStorage(tb) {
 
 function readInputs() {
   const model = models[el("model").value];
-  const hw = hardware[state.hardware];
+  const hw = getHardwareProfile();
   const quant = precision[state.precision];
   const users = numberValue("users");
   const turns = numberValue("turns");
@@ -89,6 +117,7 @@ function readInputs() {
   return {
     model,
     hw,
+    hardwareKey: state.hardware,
     quant,
     workload: workloads[state.workload],
     users,
@@ -113,7 +142,7 @@ function readInputs() {
 }
 
 function kvGbForTokens(input, tokens) {
-  const bytes = tokens * input.model.layers * input.model.hidden * 2 * input.quant.kvBytes;
+  const bytes = tokens * input.model.layers * input.model.hidden * 2 * input.quant.kvBytes * (input.model.kvScale || 1);
   return bytes / 1024 ** 3;
 }
 
@@ -136,7 +165,15 @@ function simulate() {
   const final = turnRows[turnRows.length - 1];
   const firstOverflow = turnRows.find((row) => row.overflowGb > 0);
   const gpuMemoryNeed = Math.ceil((modelWeightGb + engineReserveGb + final.kvGb) / (input.hw.memoryGb * 0.86));
-  const gpuComputeNeed = Math.ceil((input.tokensPerDay / 86400) / input.hw.warmTokPerSec);
+  const baseComputeNeed = Math.ceil((input.tokensPerDay / 86400) / input.hw.warmTokPerSec);
+  const retrieverComputeNeed = input.model.category === "retriever"
+    ? Math.ceil(Math.max(
+        (input.users * input.sessions * input.turns) / Math.max(1, input.hw.retrieverEmbedPerSec * 3600),
+        (input.corpusTb * 1024 * 1024 / 24) / Math.max(1, input.hw.retrieverExtractPagesPerSec * 3600),
+        (input.users * input.sessions * input.turns * 40) / Math.max(1, input.hw.retrieverRerankPerSec * 3600)
+      ))
+    : 0;
+  const gpuComputeNeed = Math.max(baseComputeNeed, retrieverComputeNeed);
   const rightSizedNoFabric = Math.max(gpuMemoryNeed, gpuComputeNeed);
   const rightSizedFabric = Math.max(Math.ceil((modelWeightGb + engineReserveGb + Math.min(final.kvGb, kvCapacityGb)) / (input.hw.memoryGb * 0.86)), gpuComputeNeed);
   const annualNoFabric = rightSizedNoFabric * input.gpuRate * 8760;
@@ -183,6 +220,8 @@ function simulate() {
     turnRows,
     final,
     firstOverflow,
+    baseComputeNeed,
+    retrieverComputeNeed,
     rightSizedNoFabric,
     rightSizedFabric,
     annualNoFabric,
@@ -224,7 +263,9 @@ function updateSummaries() {
   el("turnsValue").textContent = fmt.format(input.turns);
   el("hardwareSummary").textContent = `${input.gpus} x ${input.hw.label} | ${fmt.format(input.gpus * input.hw.memoryGb)} GB HBM`;
   el("tokenDaySummary").textContent = `${compactNumber(input.tokensPerDay, "/day")} | ${fmt.format(input.users)} users x ${input.turns} turns x ${fmt.format(input.tokensPerTurn)} tokens`;
-  el("kvSummary").textContent = `${fmt.format(input.prefill)} prefill + ${fmt.format(input.maxOutput)} output per turn`;
+  el("kvSummary").textContent = input.model.category === "retriever"
+    ? `${input.model.name} | ${fmt.format(input.prefill)} query/context tokens | embedding + retrieval profile`
+    : `${fmt.format(input.prefill)} prefill + ${fmt.format(input.maxOutput)} output per turn`;
   const month36Corpus = input.corpusTb * Math.pow(1 + input.growthRate, 35) * input.tenants;
   el("storageSummary").textContent = `Corpus reaches ${formatStorage(month36Corpus)} at month 36 before derived data.`;
 }
@@ -276,6 +317,7 @@ function memoryTab(result) {
           <div class="stat"><span>Engine reserve</span><strong>${formatStorage(result.engineReserveGb / 1000)}</strong></div>
           <div class="stat"><span>Final-turn KV</span><strong>${formatStorage(result.final.kvGb / 1000)}</strong></div>
           <div class="stat"><span>Usable HBM</span><strong>${formatStorage(result.usableHbmGb / 1000)}</strong></div>
+          <div class="stat"><span>Hardware profile</span><strong>${result.input.hw.label}</strong></div>
           <div class="stat"><span>Expand-only GPUs</span><strong>${result.rightSizedNoFabric}</strong></div>
           <div class="stat"><span>Fabric-assisted GPUs</span><strong>${result.rightSizedFabric}</strong></div>
         </div>
@@ -367,6 +409,8 @@ function pipelineTab(result) {
           <tr><td>Cold-start TTFT</td><td>Prefill</td><td>${coldStartNo.toFixed(1)} s</td><td>${coldStartFabric.toFixed(1)} s</td></tr>
           <tr><td>Time between tokens</td><td>Decode</td><td>${result.tbtNoFabric.toFixed(2)} ms</td><td>${result.tbtFabric.toFixed(2)} ms</td></tr>
           <tr><td>KV cache hit rate</td><td>Decode</td><td>${(result.work.hitNoFabric * 100).toFixed(0)}%</td><td>${(result.work.hitFabric * 100).toFixed(0)}%</td></tr>
+          <tr><td>Retriever embedding</td><td>Retrieve</td><td>${fmt.format(Math.round(result.input.hw.retrieverEmbedPerSec || 0))} inputs/s/GPU</td><td>${fmt.format(Math.round((result.input.hw.retrieverEmbedPerSec || 0) * 1.12))} inputs/s/GPU</td></tr>
+          <tr><td>Document extraction</td><td>Ingest</td><td>${(result.input.hw.retrieverExtractPagesPerSec || 0).toFixed(1)} pages/s/GPU</td><td>${((result.input.hw.retrieverExtractPagesPerSec || 0) * 1.1).toFixed(1)} pages/s/GPU</td></tr>
         </tbody>
       </table>
     </article>`;
@@ -440,7 +484,7 @@ function resetInputs() {
   el("userRetention").value = 521;
   state.workload = "rag";
   state.precision = "fp16";
-  state.hardware = "h100";
+  state.hardware = "dgx-h100";
   bindSegmentState();
   updateSummaries();
   runSimulation();
@@ -456,6 +500,7 @@ function bindSegmentState() {
   document.querySelectorAll("#hardwareChoices button").forEach((button) => {
     button.classList.toggle("is-active", button.dataset.value === state.hardware);
   });
+  el("customHardware").classList.toggle("is-visible", state.hardware === "custom");
 }
 
 function init() {
@@ -487,6 +532,9 @@ function init() {
   document.querySelectorAll("#hardwareChoices button").forEach((button) => {
     button.addEventListener("click", () => {
       state.hardware = button.dataset.value;
+      if (hardware[state.hardware]?.defaultGpus) {
+        el("gpus").value = hardware[state.hardware].defaultGpus;
+      }
       bindSegmentState();
       updateSummaries();
       if (state.hasRun) runSimulation();

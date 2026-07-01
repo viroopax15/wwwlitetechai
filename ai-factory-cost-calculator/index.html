@@ -47,6 +47,7 @@
                 <button type="button" data-value="code">Code</button>
                 <button type="button" data-value="agent">Agentic</button>
                 <button type="button" data-value="batch">Batch</button>
+                <button type="button" data-value="retriever">Retriever</button>
               </div>
               <p class="hint" id="workloadHint">RAG over internal knowledge, multi-turn Q&A, and audit logging.</p>
 
@@ -61,6 +62,14 @@
                 <option value="mistral-7b">Mistral 7B - 14 GB</option>
                 <option value="qwen2-72b" selected>Qwen 2 72B - 144 GB</option>
                 <option value="falcon-40b">Falcon 40B - 80 GB</option>
+                <option value="nemotron3-nano-30b-a3b">NVIDIA Nemotron 3 Nano 30B-A3B NIM - 60 GB</option>
+                <option value="nemotron3-nano-omni-30b-a3b">NVIDIA Nemotron 3 Nano Omni 30B-A3B NIM - 60 GB</option>
+                <option value="nemotron3-super-120b-a12b">NVIDIA Nemotron 3 Super 120B-A12B NIM - 240 GB</option>
+                <option value="nemotron3-ultra-550b-a55b">NVIDIA Nemotron 3 Ultra 550B-A55B NIM - 1.1 TB</option>
+                <option value="nemo-retriever-embed-300m">NeMo Retriever Llama Nemotron Embed 300M v2 - 3.5 GB</option>
+                <option value="nemo-retriever-embed-1b">NeMo Retriever Llama Nemotron Embed 1B v2 - 6.5 GB</option>
+                <option value="nemo-retriever-embed-vl-1b">NeMo Retriever Llama Nemotron Embed VL 1B v2 - 8.5 GB</option>
+                <option value="nemo-retriever-nv-embedqa-e5">NeMo Retriever NV-EmbedQA-E5 v5 - 2 GB</option>
                 <option value="custom-140b">My model - 140 GB</option>
               </select>
 
@@ -73,9 +82,41 @@
 
               <label class="field-label">Hardware profile</label>
               <div class="segmented" role="group" aria-label="Hardware profile" id="hardwareChoices">
-                <button type="button" data-value="h100" class="is-active">H100 80GB</button>
+                <button type="button" data-value="dgx-h100" class="is-active">DGX/HGX H100</button>
+                <button type="button" data-value="dgx-h200">DGX/HGX H200</button>
+                <button type="button" data-value="dgx-b200">DGX B200</button>
+                <button type="button" data-value="gb200-nvl72">GB200 NVL72</button>
                 <button type="button" data-value="a100">A100 80GB</button>
                 <button type="button" data-value="l40s">L40S 48GB</button>
+                <button type="button" data-value="rtx-pro-6000">RTX PRO 6000</button>
+                <button type="button" data-value="custom">Custom BYO</button>
+              </div>
+
+              <div class="custom-hardware" id="customHardware">
+                <div class="two-col">
+                  <label>
+                    <span>Custom label</span>
+                    <input id="customHardwareLabel" type="text" value="Custom BYO GPU" />
+                  </label>
+                  <label>
+                    <span>Memory / GPU (GB)</span>
+                    <input id="customMemoryGb" type="number" min="8" max="512" step="1" value="80" />
+                  </label>
+                </div>
+                <div class="three-col">
+                  <label>
+                    <span>Tokens/sec/GPU</span>
+                    <input id="customTokPerSec" type="number" min="1" max="2000" step="1" value="120" />
+                  </label>
+                  <label>
+                    <span>Cold read GB/s</span>
+                    <input id="customColdRead" type="number" min="0.1" max="100" step="0.1" value="2" />
+                  </label>
+                  <label>
+                    <span>Accelerated read GB/s</span>
+                    <input id="customAccelRead" type="number" min="0.1" max="100" step="0.1" value="4" />
+                  </label>
+                </div>
               </div>
 
               <label class="range-row" for="gpus">
