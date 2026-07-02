@@ -418,6 +418,7 @@ h3 {
   justify-content: center;
   margin: 0 0 16px;
   padding: 8px;
+  overflow: visible;
 }
 
 .demo-screen img {
@@ -429,7 +430,8 @@ h3 {
 }
 
 .architecture-screen img {
-  max-height: min(46vh, 380px);
+  width: min(100%, 900px);
+  max-height: min(48vh, 420px);
 }
 
 .workflow-card b {
@@ -581,7 +583,7 @@ h3 {
   }
 
   .architecture-screen img {
-    max-height: min(38vh, 250px);
+    max-height: min(42vh, 320px);
   }
 
   .metric-card,
