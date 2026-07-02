@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Drug discovery demo screen</title>
+  <desc id="desc">A life sciences workflow showing protein sequence, structure, virtual screening, and candidate validation.</desc>
+  <rect width="960" height="540" rx="28" fill="#07111d"/>
+  <rect x="44" y="34" width="872" height="472" rx="22" fill="#0e1624" stroke="#23324b"/>
+  <text x="76" y="76" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Drug Discovery. Faster.</text>
+  <text x="76" y="103" fill="#a9b7c8" font-family="Inter, Arial, sans-serif" font-size="14">Protein sequence to market-ready candidates with AI-assisted screening</text>
+  <g fill="none" stroke="#2dd4bf" stroke-width="4" opacity=".75">
+    <path d="M128 162c46 42 46 86 0 128s-46 86 0 128"/>
+    <path d="M188 162c-46 42-46 86 0 128s46 86 0 128"/>
+  </g>
+  <g fill="#2dd4bf">
+    <circle cx="128" cy="188" r="7"/><circle cx="188" cy="188" r="7"/>
+    <circle cx="128" cy="244" r="7"/><circle cx="188" cy="244" r="7"/>
+    <circle cx="128" cy="300" r="7"/><circle cx="188" cy="300" r="7"/>
+    <circle cx="128" cy="356" r="7"/><circle cx="188" cy="356" r="7"/>
+  </g>
+  <g fill="#121d2d" stroke="#22314a">
+    <rect x="270" y="142" width="164" height="262" rx="16"/>
+    <rect x="478" y="142" width="164" height="262" rx="16"/>
+    <rect x="686" y="142" width="164" height="262" rx="16"/>
+  </g>
+  <text x="302" y="180" fill="#2dd4bf" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">Structure</text>
+  <path d="M320 268c32-74 58 74 86 0" fill="none" stroke="#4da3ff" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="334" cy="250" r="16" fill="#4da3ff" opacity=".5"/>
+  <circle cx="392" cy="292" r="18" fill="#8bd450" opacity=".6"/>
+  <text x="508" y="180" fill="#4da3ff" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">Screening</text>
+  <g fill="#0b1320" stroke="#4da3ff">
+    <rect x="512" y="218" width="96" height="30" rx="8"/>
+    <rect x="512" y="270" width="96" height="30" rx="8"/>
+    <rect x="512" y="322" width="96" height="30" rx="8"/>
+  </g>
+  <text x="528" y="238" fill="#dceeff" font-family="Inter, Arial, sans-serif" font-size="11">2.1B library</text>
+  <text x="528" y="290" fill="#dceeff" font-family="Inter, Arial, sans-serif" font-size="11">top 500 hits</text>
+  <text x="528" y="342" fill="#dceeff" font-family="Inter, Arial, sans-serif" font-size="11">risk filters</text>
+  <text x="718" y="180" fill="#8bd450" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">Candidates</text>
+  <path d="M736 244h78M736 282h64M736 320h88M736 358h52" stroke="#8bd450" stroke-width="10" stroke-linecap="round"/>
+  <text x="76" y="462" fill="#a9b7c8" font-family="Inter, Arial, sans-serif" font-size="13">Target context, literature RAG, candidate scoring, and validation packets stay connected.</text>
+</svg>

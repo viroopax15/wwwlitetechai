@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Multimedia intelligence demo screen</title>
+  <desc id="desc">A multimedia search dashboard with video frames, OCR, transcripts, metadata, and evidence cards.</desc>
+  <rect width="960" height="540" rx="28" fill="#07111d"/>
+  <rect x="44" y="34" width="872" height="472" rx="22" fill="#0e1624" stroke="#23324b"/>
+  <text x="76" y="76" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Multimedia Intelligence</text>
+  <text x="76" y="103" fill="#a9b7c8" font-family="Inter, Arial, sans-serif" font-size="14">Search images, video, transcripts, OCR, and metadata through one retrieval layer</text>
+  <rect x="76" y="140" width="396" height="252" rx="16" fill="#05080d" stroke="#22314a"/>
+  <rect x="104" y="170" width="148" height="86" rx="12" fill="#122f57"/>
+  <rect x="276" y="170" width="148" height="86" rx="12" fill="#163044"/>
+  <rect x="104" y="278" width="148" height="86" rx="12" fill="#1b293f"/>
+  <rect x="276" y="278" width="148" height="86" rx="12" fill="#11251f"/>
+  <circle cx="178" cy="213" r="20" fill="#4da3ff" opacity=".65"/>
+  <path d="M332 208l26 18 26-44" fill="none" stroke="#2dd4bf" stroke-width="10" stroke-linecap="round"/>
+  <path d="M126 326h96M126 344h74" stroke="#a9b7c8" stroke-width="7" stroke-linecap="round"/>
+  <path d="M306 326h88M306 344h54" stroke="#8bd450" stroke-width="7" stroke-linecap="round"/>
+  <g fill="#121d2d" stroke="#22314a">
+    <rect x="514" y="140" width="330" height="66" rx="14"/>
+    <rect x="514" y="228" width="330" height="66" rx="14"/>
+    <rect x="514" y="316" width="330" height="66" rx="14"/>
+  </g>
+  <text x="540" y="180" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800">Search: turbine corrosion last inspection</text>
+  <text x="540" y="268" fill="#2dd4bf" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800">Evidence: video frame + service log</text>
+  <text x="540" y="356" fill="#4da3ff" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800">Action: route finding to workflow</text>
+  <rect x="76" y="430" width="768" height="16" rx="8" fill="#162033"/>
+  <rect x="76" y="430" width="612" height="16" rx="8" fill="#4da3ff"/>
+</svg>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AIDP Demos | Lite Tech AI</title>
+    <meta
+      name="description"
+      content="Interactive AI Data Platform demos for learning, RAG, financial services, drug discovery, multimedia intelligence, and AI factory value props."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="demo-header">
+      <button class="brand-button" type="button" data-route="home" aria-label="AIDP Demos home">
+        <span class="brand-mark">AI</span>
+        <span>
+          <strong>AIDP Demos</strong>
+          <small>AI factories · data pipelines · agents</small>
+        </span>
+      </button>
+      <nav class="demo-nav" aria-label="Demo navigation">
+        <button type="button" data-route="home">Home</button>
+        <button type="button" data-route="learn">Learn</button>
+        <button type="button" data-route="experience">Experience</button>
+        <button type="button" data-route="try">Try</button>
+      </nav>
+      <button class="back-button" type="button" id="backButton">Back</button>
+    </header>
+
+    <main id="app" class="demo-main" aria-live="polite"></main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

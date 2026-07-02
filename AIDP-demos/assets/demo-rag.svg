@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">RAG demo screen</title>
+  <desc id="desc">A RAG dashboard screen with document ingestion, retrieval, benchmark, and cited answer panels.</desc>
+  <rect width="960" height="540" rx="28" fill="#07111d"/>
+  <rect x="38" y="34" width="884" height="472" rx="22" fill="#0e1624" stroke="#23324b"/>
+  <text x="70" y="76" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">RAG. Easy. Secure.</text>
+  <text x="70" y="103" fill="#a9b7c8" font-family="Inter, Arial, sans-serif" font-size="14">Documents -> extraction -> chunks -> vector index -> cited answers</text>
+  <g fill="#121d2d" stroke="#22314a">
+    <rect x="70" y="138" width="220" height="296" rx="16"/>
+    <rect x="320" y="138" width="286" height="296" rx="16"/>
+    <rect x="636" y="138" width="214" height="296" rx="16"/>
+  </g>
+  <text x="96" y="176" fill="#2dd4bf" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">Ingest queue</text>
+  <g font-family="Inter, Arial, sans-serif" font-size="13" fill="#f8fafc">
+    <text x="96" y="218">contracts.pdf</text>
+    <text x="96" y="258">renewals.xlsx</text>
+    <text x="96" y="298">support-notes.docx</text>
+    <text x="96" y="338">policy-images.zip</text>
+  </g>
+  <g fill="#163044">
+    <rect x="96" y="230" width="150" height="8" rx="4"/>
+    <rect x="96" y="270" width="176" height="8" rx="4"/>
+    <rect x="96" y="310" width="128" height="8" rx="4"/>
+    <rect x="96" y="350" width="162" height="8" rx="4"/>
+  </g>
+  <text x="350" y="176" fill="#4da3ff" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">Retrieval trace</text>
+  <g fill="none" stroke-width="5" stroke-linecap="round">
+    <path d="M366 226h186" stroke="#2dd4bf"/>
+    <path d="M366 278h148" stroke="#4da3ff"/>
+    <path d="M366 330h206" stroke="#8bd450"/>
+    <path d="M366 382h170" stroke="#f59e0b"/>
+  </g>
+  <g fill="#0b1320" stroke="#22314a">
+    <rect x="354" y="204" width="218" height="34" rx="9"/>
+    <rect x="354" y="256" width="218" height="34" rx="9"/>
+    <rect x="354" y="308" width="218" height="34" rx="9"/>
+    <rect x="354" y="360" width="218" height="34" rx="9"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" font-size="12" fill="#a9b7c8">
+    <text x="380" y="226">Extract + chunk</text>
+    <text x="380" y="278">Embed + index</text>
+    <text x="380" y="330">Retrieve + rerank</text>
+    <text x="380" y="382">Answer + cite</text>
+  </g>
+  <text x="666" y="176" fill="#8bd450" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">Ask enterprise data</text>
+  <rect x="666" y="202" width="154" height="58" rx="12" fill="#0b1320" stroke="#22314a"/>
+  <text x="684" y="228" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="12">Which contracts</text>
+  <text x="684" y="246" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="12">renew this quarter?</text>
+  <rect x="666" y="288" width="154" height="104" rx="12" fill="#11251f" stroke="#2dd4bf"/>
+  <text x="684" y="316" fill="#d7fffb" font-family="Inter, Arial, sans-serif" font-size="12">Answer with citations</text>
+  <text x="684" y="342" fill="#a9b7c8" font-family="Inter, Arial, sans-serif" font-size="11">Confidence 94%</text>
+  <text x="684" y="366" fill="#a9b7c8" font-family="Inter, Arial, sans-serif" font-size="11">3 source chunks</text>
+  <rect x="70" y="458" width="780" height="8" rx="4" fill="#162033"/>
+  <rect x="70" y="458" width="704" height="8" rx="4" fill="#2dd4bf"/>
+</svg>
