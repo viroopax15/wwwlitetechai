@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Financial analysis demo screen</title>
+  <desc id="desc">A financial intelligence dashboard with risk terminal, portfolio metrics, and architecture flow.</desc>
+  <rect width="960" height="540" rx="28" fill="#07111d"/>
+  <rect x="44" y="34" width="872" height="472" rx="22" fill="#0e1624" stroke="#23324b"/>
+  <text x="76" y="76" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Financial Analysis 2.0</text>
+  <text x="76" y="103" fill="#a9b7c8" font-family="Inter, Arial, sans-serif" font-size="14">Intraday risk, surveillance, and explainability on governed market data</text>
+  <rect x="76" y="138" width="352" height="296" rx="16" fill="#05080d" stroke="#22314a"/>
+  <text x="102" y="174" fill="#b7f7d0" font-family="Menlo, Consolas, monospace" font-size="13">$ load portfolio --positions 18M</text>
+  <text x="102" y="204" fill="#b7f7d0" font-family="Menlo, Consolas, monospace" font-size="13">$ run scenarios --gpu-pool</text>
+  <text x="102" y="234" fill="#8bd450" font-family="Menlo, Consolas, monospace" font-size="13">OK VaR recalculated in 02:03</text>
+  <text x="102" y="264" fill="#8bd450" font-family="Menlo, Consolas, monospace" font-size="13">OK anomalies routed to review</text>
+  <text x="102" y="294" fill="#4da3ff" font-family="Menlo, Consolas, monospace" font-size="13">-> explainability packet ready</text>
+  <g fill="#121d2d" stroke="#22314a">
+    <rect x="462" y="138" width="174" height="130" rx="16"/>
+    <rect x="668" y="138" width="174" height="130" rx="16"/>
+    <rect x="462" y="304" width="380" height="130" rx="16"/>
+  </g>
+  <text x="486" y="176" fill="#2dd4bf" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">6 hrs -> 2 min</text>
+  <text x="486" y="206" fill="#a9b7c8" font-family="Inter, Arial, sans-serif" font-size="13">Risk recalculation</text>
+  <text x="692" y="176" fill="#4da3ff" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">90%</text>
+  <text x="692" y="206" fill="#a9b7c8" font-family="Inter, Arial, sans-serif" font-size="13">GPU utilization target</text>
+  <text x="486" y="342" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">Live intelligence architecture</text>
+  <path d="M498 384h82m38 0h82m38 0h66" stroke="#2dd4bf" stroke-width="6" stroke-linecap="round"/>
+  <g fill="#0b1320" stroke="#4da3ff">
+    <rect x="486" y="366" width="96" height="36" rx="10"/>
+    <rect x="616" y="366" width="96" height="36" rx="10"/>
+    <rect x="746" y="366" width="74" height="36" rx="10"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" font-size="11" fill="#dceeff">
+    <text x="510" y="389">Feeds</text>
+    <text x="642" y="389">Models</text>
+    <text x="765" y="389">Desk</text>
+  </g>
+</svg>

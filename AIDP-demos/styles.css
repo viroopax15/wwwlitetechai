@@ -232,6 +232,31 @@ h3 {
   min-height: 430px;
 }
 
+.architecture-image,
+.demo-screen img,
+.story-visual img,
+.demo-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.architecture-image,
+.demo-screen,
+.story-visual {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(14, 22, 36, 0.82);
+  box-shadow: var(--shadow);
+}
+
+.architecture-image {
+  height: 100%;
+  max-height: 430px;
+  object-fit: cover;
+}
+
 .data-stack {
   position: absolute;
   inset: 0;
@@ -278,6 +303,16 @@ h3 {
 .story-card {
   min-height: 420px;
   padding: clamp(20px, 3vw, 32px);
+}
+
+.story-visual {
+  margin: 16px 0 0;
+}
+
+.story-visual img {
+  max-height: 170px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .story-card ul {
@@ -330,6 +365,15 @@ h3 {
   text-align: left;
 }
 
+.demo-card img {
+  aspect-ratio: 16 / 9;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  object-fit: cover;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+}
+
 .demo-card h3 span {
   color: var(--cyan);
 }
@@ -366,6 +410,16 @@ h3 {
 .workflow-card {
   min-height: 118px;
   padding: 14px;
+}
+
+.demo-screen {
+  margin: 0 0 16px;
+}
+
+.demo-screen img {
+  max-height: 240px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .workflow-card b {
@@ -444,8 +498,8 @@ h3 {
   }
 
   .demo-main {
-    padding-top: 16px;
-    padding-bottom: 26px;
+    padding-top: 12px;
+    padding-bottom: 20px;
   }
 
   h1 {
@@ -461,13 +515,23 @@ h3 {
   }
 
   .lead {
-    font-size: 1rem;
-    line-height: 1.42;
+    font-size: 0.96rem;
+    line-height: 1.36;
+  }
+
+  .section-head {
+    margin-bottom: 10px;
   }
 
   .choice-card,
   .demo-card {
-    min-height: 148px;
+    min-height: 132px;
+  }
+
+  .choice-card,
+  .demo-card,
+  .value-card {
+    padding: 14px;
   }
 
   .select-glyph {
@@ -480,6 +544,10 @@ h3 {
     min-height: 356px;
   }
 
+  .architecture-image {
+    max-height: 356px;
+  }
+
   .data-tile {
     min-height: 86px;
     padding: 13px;
@@ -489,12 +557,48 @@ h3 {
     min-height: 340px;
   }
 
+  .story-visual img {
+    max-height: 102px;
+  }
+
+  .demo-card img {
+    max-height: 86px;
+    margin-bottom: 10px;
+  }
+
+  .demo-screen img {
+    max-height: 108px;
+  }
+
+  .metric-card,
+  .panel,
+  .workflow-card {
+    padding: 12px;
+  }
+
+  .workflow-card {
+    min-height: 88px;
+  }
+
+  .workflow-card b {
+    margin-bottom: 5px;
+  }
+
+  .tabs {
+    gap: 6px;
+  }
+
+  .tab-button {
+    min-height: 34px;
+    padding: 0 12px;
+  }
+
   .story-card li {
     padding: 9px 12px;
   }
 
   .terminal {
-    min-height: 232px;
+    min-height: 200px;
   }
 }
 
@@ -523,6 +627,10 @@ h3 {
 
   .hero-visual {
     min-height: 380px;
+  }
+
+  .architecture-image {
+    max-height: none;
   }
 }
 
@@ -558,5 +666,11 @@ h3 {
 
   .hero-visual {
     min-height: auto;
+  }
+
+  .story-visual img,
+  .demo-screen img,
+  .demo-card img {
+    max-height: none;
   }
 }

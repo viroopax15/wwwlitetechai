@@ -77,6 +77,7 @@ const demos = {
   rag: {
     title: "RAG. Easy. Secure.",
     subtitle: "Upload documents, retrieve relevant context, ask questions naturally, and compare data-pipeline performance.",
+    visual: "./assets/demo-rag.svg",
     nav: ["overview", "storage", "ingest", "query", "benchmark", "next"],
     metrics: [["20x", "faster pipeline"], ["99%", "GPU feed target"], ["Private", "enterprise data"]],
     terminal: [
@@ -92,6 +93,7 @@ const demos = {
   fsi: {
     title: "Financial Analysis 2.0",
     subtitle: "Move from overnight batch analytics to intraday decision-making with GPU-optimized data pipelines.",
+    visual: "./assets/demo-finance.svg",
     nav: ["overview", "terminal", "architecture", "next"],
     metrics: [["6 hrs → 2 min", "risk calculation"], ["60% → 90%", "GPU utilization"], ["$800K+", "avoided CapEx"]],
     terminal: [
@@ -106,6 +108,7 @@ const demos = {
   bio: {
     title: "Drug Discovery. Faster.",
     subtitle: "Accelerate target discovery, structure prediction, virtual screening, and candidate validation.",
+    visual: "./assets/demo-bio.svg",
     nav: ["overview", "rag", "screening", "architecture", "next"],
     metrics: [["Weeks → Hours", "target to lead"], ["Billions", "screened compounds"], ["2-3x", "faster lead cycle"]],
     terminal: [
@@ -120,6 +123,7 @@ const demos = {
   media: {
     title: "Multimedia Intelligence",
     subtitle: "Search across images, video, text, audio, and metadata with a unified retrieval layer.",
+    visual: "./assets/demo-media.svg",
     nav: ["overview", "extract", "search", "govern", "next"],
     metrics: [["All media", "single index"], ["Frames + text", "multimodal chunks"], ["Seconds", "answer latency"]],
     terminal: [
@@ -187,15 +191,8 @@ function homeTemplate() {
           </button>
         </div>
       </div>
-      <div class="hero-visual" aria-hidden="true">
-        <div class="data-stack">
-          <div class="data-tile"><strong>Ingest</strong><span>Documents · tables · images · video</span></div>
-          <div class="data-tile"><strong>Prepare</strong><span>Extract · chunk · embed · index</span></div>
-          <div class="data-tile"><strong>Retrieve</strong><span>Search · rerank · cite · govern</span></div>
-          <div class="data-tile"><strong>Infer</strong><span>NIMs · LLMs · agents · copilots</span></div>
-          <div class="data-tile"><strong>Operate</strong><span>Observe · secure · scale · optimize</span></div>
-          <div class="data-tile"><strong>Value</strong><span>Apps that act on trusted data</span></div>
-        </div>
+      <div class="hero-visual">
+        <img class="architecture-image" src="./assets/ai-factory-architecture.svg" alt="AI factory data plane architecture from data sources to storage, AI services, and apps" />
       </div>
     </section>`;
 }
@@ -214,6 +211,9 @@ function learnTemplate() {
       <div class="stepper">
         <article class="story-card">
           <p class="lead">${step.lead}</p>
+          <figure class="story-visual">
+            <img src="./assets/ai-factory-architecture.svg" alt="AI factory architecture diagram" />
+          </figure>
           <ul>${step.bullets.map((item) => `<li>${item}</li>`).join("")}</ul>
           <div class="actions">
             <button class="primary-action" type="button" data-action="next-learn">${state.learnStep === learnSteps.length - 1 ? "Explore demos" : "Continue"}</button>
@@ -238,10 +238,10 @@ function experienceTemplate() {
         </div>
       </div>
       <div class="experience-grid">
-        <button class="demo-card" type="button" data-action="demo" data-demo="rag"><h3>RAG. Easy. <span>Secure.</span></h3><p class="muted">Ingest, retrieve, query, and benchmark governed enterprise documents.</p></button>
-        <button class="demo-card" type="button" data-action="demo" data-demo="fsi"><h3>Financial <span>Analysis 2.0</span></h3><p class="muted">Walk through AI-powered financial intelligence from terminal to architecture.</p></button>
-        <button class="demo-card" type="button" data-action="demo" data-demo="bio"><h3>Drug Discovery. <span>Faster.</span></h3><p class="muted">Move from protein sequence to validated candidates with AI-assisted screening.</p></button>
-        <button class="demo-card" type="button" data-action="demo" data-demo="media"><h3>Multimedia <span>Intelligence</span></h3><p class="muted">Search images, video, text, audio, and metadata through one retrieval interface.</p></button>
+        <button class="demo-card" type="button" data-action="demo" data-demo="rag"><img src="${demos.rag.visual}" alt="" /><h3>RAG. Easy. <span>Secure.</span></h3><p class="muted">Ingest, retrieve, query, and benchmark governed enterprise documents.</p></button>
+        <button class="demo-card" type="button" data-action="demo" data-demo="fsi"><img src="${demos.fsi.visual}" alt="" /><h3>Financial <span>Analysis 2.0</span></h3><p class="muted">Walk through AI-powered financial intelligence from terminal to architecture.</p></button>
+        <button class="demo-card" type="button" data-action="demo" data-demo="bio"><img src="${demos.bio.visual}" alt="" /><h3>Drug Discovery. <span>Faster.</span></h3><p class="muted">Move from protein sequence to validated candidates with AI-assisted screening.</p></button>
+        <button class="demo-card" type="button" data-action="demo" data-demo="media"><img src="${demos.media.visual}" alt="" /><h3>Multimedia <span>Intelligence</span></h3><p class="muted">Search images, video, text, audio, and metadata through one retrieval interface.</p></button>
       </div>
     </section>`;
 }
@@ -273,18 +273,26 @@ function tabLabel(tab) {
 
 function demoPanel(demo) {
   if (state.tab === "terminal") {
-    return `<h3>Terminal walkthrough</h3><div class="terminal">${demo.terminal.map((line) => `<span>${line}</span>`).join("")}</div>`;
+    return `${demoVisual(demo)}<h3>Terminal walkthrough</h3><div class="terminal">${demo.terminal.map((line) => `<span>${line}</span>`).join("")}</div>`;
   }
   if (state.tab === "benchmark") {
-    return `<h3>Benchmark</h3><p class="muted">Compare a traditional cloud pipeline against a tuned AI factory data path.</p>${barRows([["Cloud baseline", 38], ["AI factory pipeline", 92], ["GPU feed efficiency", 99]])}`;
+    return `${demoVisual(demo)}<h3>Benchmark</h3><p class="muted">Compare a traditional cloud pipeline against a tuned AI factory data path.</p>${barRows([["Cloud baseline", 38], ["AI factory pipeline", 92], ["GPU feed efficiency", 99]])}`;
   }
   if (state.tab === "architecture") {
-    return `<h3>Architecture</h3><div class="workflow-grid">${["Data sources", "High-performance storage", "GPU services", "Apps and agents"].map((item) => `<div class="workflow-card"><b>${item}</b><span class="muted">${architectureText(item)}</span></div>`).join("")}</div>`;
+    return `${architectureVisual()}<h3>Architecture</h3><div class="workflow-grid">${["Data sources", "High-performance storage", "GPU services", "Apps and agents"].map((item) => `<div class="workflow-card"><b>${item}</b><span class="muted">${architectureText(item)}</span></div>`).join("")}</div>`;
   }
   if (state.tab === "next") {
-    return `<h3>Next steps</h3><p class="muted">Pick one high-value workflow, connect approved data, define success metrics, and launch a production pilot with monitoring from day one.</p><div class="actions"><button class="primary-action" type="button" data-action="route" data-target="try">See business value props</button><button class="ghost-action" type="button" data-action="route" data-target="experience">Choose another demo</button></div>`;
+    return `${demoVisual(demo)}<h3>Next steps</h3><p class="muted">Pick one high-value workflow, connect approved data, define success metrics, and launch a production pilot with monitoring from day one.</p><div class="actions"><button class="primary-action" type="button" data-action="route" data-target="try">See business value props</button><button class="ghost-action" type="button" data-action="route" data-target="experience">Choose another demo</button></div>`;
   }
-  return `<h3>${tabLabel(state.tab)}</h3><p class="muted">${panelCopy(state.demo, state.tab)}</p><div class="workflow-grid">${workflowItems(state.demo, state.tab).map((item) => `<div class="workflow-card"><b>${item[0]}</b><span class="muted">${item[1]}</span></div>`).join("")}</div>`;
+  return `${demoVisual(demo)}<h3>${tabLabel(state.tab)}</h3><p class="muted">${panelCopy(state.demo, state.tab)}</p><div class="workflow-grid">${workflowItems(state.demo, state.tab).map((item) => `<div class="workflow-card"><b>${item[0]}</b><span class="muted">${item[1]}</span></div>`).join("")}</div>`;
+}
+
+function demoVisual(demo) {
+  return `<figure class="demo-screen"><img src="${demo.visual}" alt="${demo.title} demo screen" /></figure>`;
+}
+
+function architectureVisual() {
+  return `<figure class="demo-screen"><img src="./assets/ai-factory-architecture.svg" alt="AI factory architecture diagram" /></figure>`;
 }
 
 function barRows(rows) {
