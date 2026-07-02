@@ -279,7 +279,7 @@ function demoPanel(demo) {
     return `${demoVisual(demo)}<h3>Benchmark</h3><p class="muted">Compare a traditional cloud pipeline against a tuned AI factory data path.</p>${barRows([["Cloud baseline", 38], ["AI factory pipeline", 92], ["GPU feed efficiency", 99]])}`;
   }
   if (state.tab === "architecture") {
-    return `${architectureVisual()}<h3>Architecture</h3><div class="workflow-grid">${["Data sources", "High-performance storage", "GPU services", "Apps and agents"].map((item) => `<div class="workflow-card"><b>${item}</b><span class="muted">${architectureText(item)}</span></div>`).join("")}</div>`;
+    return `${architectureVisual()}<h3>Architecture</h3><div class="workflow-grid">${["AI applications", "Orchestration", "Monetization", "AI agents and users"].map((item) => `<div class="workflow-card"><b>${item}</b><span class="muted">${architectureText(item)}</span></div>`).join("")}</div>`;
   }
   if (state.tab === "next") {
     return `${demoVisual(demo)}<h3>Next steps</h3><p class="muted">Pick one high-value workflow, connect approved data, define success metrics, and launch a production pilot with monitoring from day one.</p><div class="actions"><button class="primary-action" type="button" data-action="route" data-target="try">See business value props</button><button class="ghost-action" type="button" data-action="route" data-target="experience">Choose another demo</button></div>`;
@@ -301,10 +301,10 @@ function barRows(rows) {
 
 function architectureText(item) {
   const text = {
-    "Data sources": "Files, objects, databases, media, logs, and application context.",
-    "High-performance storage": "Metadata-aware storage and cache layers reduce data stalls.",
-    "GPU services": "Embedding, reranking, NIM inference, BioNeMo, and multimodal models.",
-    "Apps and agents": "Copilots, AI agents, dashboards, workflows, and governed automations."
+    "AI applications": "Copilots, dashboards, APIs, and domain workflows grounded in enterprise data.",
+    "Orchestration": "Routing, tools, guardrails, function calls, workflow state, and service placement.",
+    "Monetization": "Usage metering, chargeback, catalogs, SLAs, token cost, and business outcome tracking.",
+    "AI agents and users": "Agents consume tools and context, then deliver governed actions and answers to users."
   };
   return text[item];
 }
