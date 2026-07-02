@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Factory Cost Calculator | Lite Tech AI</title>
+    <meta
+      name="description"
+      content="Estimate GPU, memory, token, and storage economics for an enterprise AI inference factory."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Lite Tech AI home">
+          <span class="brand-mark">L</span>
+          <span>
+            <strong>Lite Tech AI</strong>
+            <small>AI Factory Planner</small>
+          </span>
+        </a>
+        <div class="topbar-actions">
+          <a class="secondary-action" href="/data-storage-estimator/">Data Storage Estimates</a>
+          <button class="icon-button" type="button" id="resetButton" title="Reset inputs" aria-label="Reset inputs">
+            <span aria-hidden="true">R</span>
+          </button>
+          <button class="primary-action" type="button" id="runButton">Run Simulation</button>
+        </div>
+      </header>
+
+      <section class="workspace" aria-label="AI Factory Cost Calculator">
+        <aside class="control-panel" aria-label="Configuration">
+          <section class="panel-section">
+            <button class="section-title" type="button" data-accordion="architecture">
+              <span class="step">1</span>
+              <span>
+                <strong>Architecture</strong>
+                <small id="architectureSummary">Enterprise RAG | Qwen 2 72B | 8 GPUs</small>
+              </span>
+              <span class="chevron" aria-hidden="true">v</span>
+            </button>
+            <div class="section-body" id="architecture">
+              <label class="field-label" for="workload">Inference workload</label>
+              <div class="segmented" role="group" aria-label="Inference workload" id="workloadChoices">
+                <button type="button" data-value="rag" class="is-active">Chatbot</button>
+                <button type="button" data-value="code">Code</button>
+                <button type="button" data-value="agent">Agentic</button>
+                <button type="button" data-value="batch">Batch</button>
+                <button type="button" data-value="retriever">Retriever</button>
+              </div>
+              <p class="hint" id="workloadHint">RAG over internal knowledge, multi-turn Q&A, and audit logging.</p>
+
+              <label class="field-label" for="model">Model</label>
+              <select id="model">
+                <option value="llama2-7b">Llama 2 7B - 14 GB</option>
+                <option value="llama2-13b">Llama 2 13B - 26 GB</option>
+                <option value="llama2-70b">Llama 2 70B - 140 GB</option>
+                <option value="llama3-8b">Llama 3 8B - 16 GB</option>
+                <option value="llama3-70b">Llama 3 70B - 140 GB</option>
+                <option value="mixtral-8x7b">Mixtral 8x7B - 94 GB</option>
+                <option value="mistral-7b">Mistral 7B - 14 GB</option>
+                <option value="qwen2-72b" selected>Qwen 2 72B - 144 GB</option>
+                <option value="falcon-40b">Falcon 40B - 80 GB</option>
+                <option value="nemotron3-nano-30b-a3b">NVIDIA Nemotron 3 Nano 30B-A3B NIM - 60 GB</option>
+                <option value="nemotron3-nano-omni-30b-a3b">NVIDIA Nemotron 3 Nano Omni 30B-A3B NIM - 60 GB</option>
+                <option value="nemotron3-super-120b-a12b">NVIDIA Nemotron 3 Super 120B-A12B NIM - 240 GB</option>
+                <option value="nemotron3-ultra-550b-a55b">NVIDIA Nemotron 3 Ultra 550B-A55B NIM - 1.1 TB</option>
+                <option value="nemo-retriever-embed-300m">NeMo Retriever Llama Nemotron Embed 300M v2 - 3.5 GB</option>
+                <option value="nemo-retriever-embed-1b">NeMo Retriever Llama Nemotron Embed 1B v2 - 6.5 GB</option>
+                <option value="nemo-retriever-embed-vl-1b">NeMo Retriever Llama Nemotron Embed VL 1B v2 - 8.5 GB</option>
+                <option value="nemo-retriever-nv-embedqa-e5">NeMo Retriever NV-EmbedQA-E5 v5 - 2 GB</option>
+                <option value="custom-140b">My model - 140 GB</option>
+              </select>
+
+              <label class="field-label">Quantization</label>
+              <div class="segmented compact" role="group" aria-label="Quantization" id="precisionChoices">
+                <button type="button" data-value="fp16" class="is-active">FP16</button>
+                <button type="button" data-value="fp8">FP8</button>
+                <button type="button" data-value="int4">INT4</button>
+              </div>
+
+              <label class="field-label">Hardware profile</label>
+              <div class="segmented" role="group" aria-label="Hardware profile" id="hardwareChoices">
+                <button type="button" data-value="dgx-h100" class="is-active">DGX/HGX H100</button>
+                <button type="button" data-value="dgx-h200">DGX/HGX H200</button>
+                <button type="button" data-value="dgx-b200">DGX B200</button>
+                <button type="button" data-value="gb200-nvl72">GB200 NVL72</button>
+                <button type="button" data-value="a100">A100 80GB</button>
+                <button type="button" data-value="l40s">L40S 48GB</button>
+                <button type="button" data-value="rtx-pro-6000">RTX PRO 6000</button>
+                <button type="button" data-value="custom">Custom BYO</button>
+              </div>
+
+              <div class="custom-hardware" id="customHardware">
+                <div class="two-col">
+                  <label>
+                    <span>Custom label</span>
+                    <input id="customHardwareLabel" type="text" value="Custom BYO GPU" />
+                  </label>
+                  <label>
+                    <span>Memory / GPU (GB)</span>
+                    <input id="customMemoryGb" type="number" min="8" max="512" step="1" value="80" />
+                  </label>
+                </div>
+                <div class="three-col">
+                  <label>
+                    <span>Tokens/sec/GPU</span>
+                    <input id="customTokPerSec" type="number" min="1" max="2000" step="1" value="120" />
+                  </label>
+                  <label>
+                    <span>Cold read GB/s</span>
+                    <input id="customColdRead" type="number" min="0.1" max="100" step="0.1" value="2" />
+                  </label>
+                  <label>
+                    <span>Accelerated read GB/s</span>
+                    <input id="customAccelRead" type="number" min="0.1" max="100" step="0.1" value="4" />
+                  </label>
+                </div>
+              </div>
+
+              <label class="range-row" for="gpus">
+                <span>GPU count</span>
+                <output id="gpusValue" for="gpus">8</output>
+              </label>
+              <input id="gpus" type="range" min="4" max="256" step="4" value="8" />
+              <p class="inline-result" id="hardwareSummary">8 x H100 80GB | 640 GB HBM</p>
+            </div>
+          </section>
+
+          <section class="panel-section">
+            <button class="section-title" type="button" data-accordion="load">
+              <span class="step">2</span>
+              <span>
+                <strong>Pipeline Load</strong>
+                <small id="loadSummary">2,000 users | 20 turns | batch 64</small>
+              </span>
+              <span class="chevron" aria-hidden="true">v</span>
+            </button>
+            <div class="section-body" id="load">
+              <label class="range-row" for="users">
+                <span>Concurrent users</span>
+                <output id="usersValue" for="users">2,000</output>
+              </label>
+              <input id="users" type="range" min="50" max="50000" step="50" value="2000" />
+
+              <label class="range-row" for="turns">
+                <span>Turns per session</span>
+                <output id="turnsValue" for="turns">20</output>
+              </label>
+              <input id="turns" type="range" min="1" max="64" step="1" value="20" />
+
+              <div class="two-col">
+                <label>
+                  <span>Sessions per user/day</span>
+                  <input id="sessions" type="number" min="0.1" max="24" step="0.1" value="1.8" />
+                </label>
+                <label>
+                  <span>Batch size</span>
+                  <input id="batchSize" type="number" min="1" max="1024" step="1" value="64" />
+                </label>
+              </div>
+              <p class="inline-result" id="tokenDaySummary">2.45B tokens/day</p>
+            </div>
+          </section>
+
+          <section class="panel-section">
+            <button class="section-title" type="button" data-accordion="tokens">
+              <span class="step">3</span>
+              <span>
+                <strong>Token Profile</strong>
+                <small id="tokenSummary">7,000 in | 1,500 out</small>
+              </span>
+              <span class="chevron" aria-hidden="true">v</span>
+            </button>
+            <div class="section-body" id="tokens">
+              <div class="eyebrow">Prefill</div>
+              <div class="three-col">
+                <label>
+                  <span>System prompt</span>
+                  <input id="systemPrompt" type="number" min="0" max="64000" step="100" value="2000" />
+                </label>
+                <label>
+                  <span>User input</span>
+                  <input id="userInput" type="number" min="1" max="64000" step="100" value="1000" />
+                </label>
+                <label>
+                  <span>Context/RAG</span>
+                  <input id="ragContext" type="number" min="0" max="256000" step="100" value="4000" />
+                </label>
+              </div>
+              <div class="eyebrow">Decode</div>
+              <div class="two-col">
+                <label>
+                  <span>Max output tokens</span>
+                  <input id="maxOutput" type="number" min="1" max="64000" step="100" value="1500" />
+                </label>
+                <label>
+                  <span>GPU hourly rate</span>
+                  <input id="gpuRate" type="number" min="0.1" max="50" step="0.1" value="2.8" />
+                </label>
+              </div>
+              <p class="inline-result" id="kvSummary">KV cache estimate pending</p>
+            </div>
+          </section>
+
+          <section class="panel-section">
+            <button class="section-title" type="button" data-accordion="data">
+              <span class="step">4</span>
+              <span>
+                <strong>Data Growth</strong>
+                <small id="dataSummary">1 tenant | 500 TB | 4%/mo</small>
+              </span>
+              <span class="chevron" aria-hidden="true">v</span>
+            </button>
+            <div class="section-body" id="data">
+              <div class="three-col">
+                <label>
+                  <span>Tenants</span>
+                  <input id="tenants" type="number" min="1" max="1000" step="1" value="1" />
+                </label>
+                <label>
+                  <span>Corpus size (TB)</span>
+                  <input id="corpusTb" type="number" min="0.1" max="100000" step="1" value="500" />
+                </label>
+                <label>
+                  <span>Growth %/mo</span>
+                  <input id="growthRate" type="number" min="0" max="25" step="0.1" value="4" />
+                </label>
+              </div>
+              <div class="two-col">
+                <label>
+                  <span>System logs (weeks)</span>
+                  <input id="logRetention" type="number" min="1" max="520" step="1" value="52" />
+                </label>
+                <label>
+                  <span>User data (weeks)</span>
+                  <input id="userRetention" type="number" min="1" max="1040" step="1" value="521" />
+                </label>
+              </div>
+              <p class="inline-result" id="storageSummary">Storage estimate pending</p>
+            </div>
+          </section>
+        </aside>
+
+        <section class="results-panel" aria-live="polite">
+          <div class="results-header">
+            <div>
+              <span class="eyebrow">Results for</span>
+              <h1>AI Factory Cost Calculator</h1>
+              <p id="resultsSubtitle">Configure your deployment, then run a simulation.</p>
+            </div>
+            <div class="status-pill" id="statusPill">Ready</div>
+          </div>
+
+          <div class="metrics-grid" id="metricsGrid">
+            <article>
+              <span>Memory fit</span>
+              <strong id="metricMemory">--</strong>
+              <small id="metricMemoryNote">Awaiting simulation</small>
+            </article>
+            <article>
+              <span>Annual GPU cost</span>
+              <strong id="metricCost">--</strong>
+              <small id="metricCostNote">Right-sized estimate</small>
+            </article>
+            <article>
+              <span>3-year data</span>
+              <strong id="metricStorage">--</strong>
+              <small id="metricStorageNote">Knowledge + usage + logs</small>
+            </article>
+            <article>
+              <span>Cost per 1M tokens</span>
+              <strong id="metricCpm">--</strong>
+              <small id="metricCpmNote">Steady-state inference</small>
+            </article>
+          </div>
+
+          <nav class="tabs" aria-label="Result views">
+            <button type="button" class="is-active" data-tab="memory">Memory</button>
+            <button type="button" data-tab="storage">Storage</button>
+            <button type="button" data-tab="business">Business</button>
+            <button type="button" data-tab="pipeline">Pipeline</button>
+            <button type="button" data-tab="tokenomics">Tokenomics</button>
+          </nav>
+
+          <div class="tab-panel" id="tabPanel">
+            <div class="empty-state">
+              <strong>Configure your deployment to see results</strong>
+              <span>Select inputs on the left and click Run Simulation.</span>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
