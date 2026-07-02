@@ -78,7 +78,7 @@ const demos = {
     title: "RAG. Easy. Secure.",
     subtitle: "Upload documents, retrieve relevant context, ask questions naturally, and compare data-pipeline performance.",
     visual: "./assets/demo-rag.svg",
-    nav: ["overview", "storage", "ingest", "query", "benchmark", "next"],
+    nav: ["overview", "storage", "ingest", "query", "benchmark", "architecture", "next"],
     metrics: [["20x", "faster pipeline"], ["99%", "GPU feed target"], ["Private", "enterprise data"]],
     terminal: [
       "$ connect source --type object --policy governed",
@@ -279,6 +279,9 @@ function demoPanel(demo) {
     return `${demoVisual(demo)}<h3>Benchmark</h3><p class="muted">Compare a traditional cloud pipeline against a tuned AI factory data path.</p>${barRows([["Cloud baseline", 38], ["AI factory pipeline", 92], ["GPU feed efficiency", 99]])}`;
   }
   if (state.tab === "architecture") {
+    if (state.demo === "rag") {
+      return `${ragArchitectureVisual()}<h3>RAG architecture</h3><p class="muted">A RAG system has two major paths: indexing enterprise content into searchable embeddings, then generating answers by retrieving context for each query before invoking the LLM.</p><div class="workflow-grid">${["Indexing", "Generating", "Datastore / index", "Grounded answer"].map((item) => `<div class="workflow-card"><b>${item}</b><span class="muted">${ragArchitectureText(item)}</span></div>`).join("")}</div>`;
+    }
     return `${architectureVisual()}<h3>Architecture</h3><div class="workflow-grid">${["AI applications", "Orchestration", "Monetization", "AI agents and users"].map((item) => `<div class="workflow-card"><b>${item}</b><span class="muted">${architectureText(item)}</span></div>`).join("")}</div>`;
   }
   if (state.tab === "next") {
@@ -295,6 +298,10 @@ function architectureVisual() {
   return `<figure class="demo-screen"><img src="./assets/ai-factory-architecture.svg" alt="AI factory architecture diagram" /></figure>`;
 }
 
+function ragArchitectureVisual() {
+  return `<figure class="demo-screen"><img src="./assets/rag-architecture.svg" alt="RAG architecture diagram showing indexing and generating flows" /></figure>`;
+}
+
 function barRows(rows) {
   return rows.map(([label, width]) => `<div class="bar-row"><span>${label}</span><div class="bar"><span style="--w:${width}%"></span></div><strong>${width}%</strong></div>`).join("");
 }
@@ -309,13 +316,24 @@ function architectureText(item) {
   return text[item];
 }
 
+function ragArchitectureText(item) {
+  const text = {
+    "Indexing": "Documents are parsed, split into chunks, embedded, and stored in a searchable index.",
+    "Generating": "Queries are embedded, matched to relevant chunks, and sent with context to the LLM.",
+    "Datastore / index": "The vector index preserves enterprise context so retrieval can happen at answer time.",
+    "Grounded answer": "The response is generated from the prompt plus retrieved evidence for better citations."
+  };
+  return text[item];
+}
+
 function panelCopy(demoKey, tab) {
   const copy = {
     rag: {
       overview: "A document-to-insight flow where governed data is extracted, chunked, embedded, retrieved, reranked, and cited.",
       storage: "Connect performant object and file storage so ingestion and retrieval avoid bottlenecks.",
       ingest: "Parse tables, PDFs, images, and records into reusable chunks with metadata and policy tags.",
-      query: "Ask questions naturally and ground responses in retrieved evidence with citations."
+      query: "Ask questions naturally and ground responses in retrieved evidence with citations.",
+      architecture: "Index enterprise content first, then retrieve the best matching context at query time before generation."
     },
     fsi: {
       overview: "A financial intelligence workflow for risk, fraud, market surveillance, and portfolio analytics.",
