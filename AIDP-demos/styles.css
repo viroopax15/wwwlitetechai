@@ -244,17 +244,16 @@ h3 {
 .architecture-image,
 .demo-screen,
 .story-visual {
-  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(14, 22, 36, 0.82);
+  background: rgba(7, 17, 29, 0.92);
   box-shadow: var(--shadow);
 }
 
 .architecture-image {
-  height: 100%;
+  height: auto;
   max-height: 430px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .data-stack {
@@ -311,7 +310,7 @@ h3 {
 
 .story-visual img {
   max-height: 170px;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 
@@ -370,7 +369,8 @@ h3 {
   margin-bottom: 14px;
   border: 1px solid var(--line);
   border-radius: 6px;
-  object-fit: cover;
+  object-fit: contain;
+  background: #07111d;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
 }
 
@@ -413,13 +413,23 @@ h3 {
 }
 
 .demo-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0 0 16px;
+  padding: 8px;
 }
 
 .demo-screen img {
-  max-height: 240px;
-  object-fit: cover;
+  width: auto;
+  max-width: 100%;
+  max-height: 260px;
+  object-fit: contain;
   object-position: center;
+}
+
+.architecture-screen img {
+  max-height: min(46vh, 380px);
 }
 
 .workflow-card b {
@@ -567,7 +577,11 @@ h3 {
   }
 
   .demo-screen img {
-    max-height: 108px;
+    max-height: 150px;
+  }
+
+  .architecture-screen img {
+    max-height: min(38vh, 250px);
   }
 
   .metric-card,

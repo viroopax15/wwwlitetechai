@@ -295,11 +295,11 @@ function demoVisual(demo) {
 }
 
 function architectureVisual() {
-  return `<figure class="demo-screen"><img src="./assets/ai-factory-architecture.svg" alt="AI factory architecture diagram" /></figure>`;
+  return `<figure class="demo-screen architecture-screen"><img src="./assets/ai-factory-architecture.svg" alt="AI factory architecture diagram" /></figure>`;
 }
 
 function ragArchitectureVisual() {
-  return `<figure class="demo-screen"><img src="./assets/rag-architecture.svg" alt="RAG architecture diagram showing indexing and generating flows" /></figure>`;
+  return `<figure class="demo-screen architecture-screen"><img src="./assets/rag-architecture.svg" alt="RAG architecture diagram showing indexing and generating flows" /></figure>`;
 }
 
 function barRows(rows) {
