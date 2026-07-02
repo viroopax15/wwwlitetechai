@@ -124,7 +124,7 @@ const demos = {
     title: "Multimedia Intelligence",
     subtitle: "Search across images, video, text, audio, and metadata with a unified retrieval layer.",
     visual: "./assets/demo-media.svg",
-    nav: ["overview", "extract", "search", "govern", "next"],
+    nav: ["overview", "extract", "search", "govern", "architecture", "next"],
     metrics: [["All media", "single index"], ["Frames + text", "multimodal chunks"], ["Seconds", "answer latency"]],
     terminal: [
       "$ ingest media --video --images --transcripts --metadata",
@@ -282,6 +282,9 @@ function demoPanel(demo) {
     if (state.demo === "rag") {
       return `${ragArchitectureVisual()}<h3>RAG architecture</h3><p class="muted">A RAG system has two major paths: indexing enterprise content into searchable embeddings, then generating answers by retrieving context for each query before invoking the LLM.</p><div class="workflow-grid">${["Indexing", "Generating", "Datastore / index", "Grounded answer"].map((item) => `<div class="workflow-card"><b>${item}</b><span class="muted">${ragArchitectureText(item)}</span></div>`).join("")}</div>`;
     }
+    if (state.demo === "media") {
+      return `${mediaArchitectureVisual()}<h3>Multimedia intelligence architecture</h3><p class="muted">A VSS-style media pipeline ingests live and archived video, images, audio, transcripts, and metadata, then extracts multimodal signals for retrieval, summarization, agent workflows, and governed operational actions.</p><div class="workflow-grid">${["Media ingest", "Visual understanding", "Hybrid retrieval", "Agent actions"].map((item) => `<div class="workflow-card"><b>${item}</b><span class="muted">${mediaArchitectureText(item)}</span></div>`).join("")}</div>`;
+    }
     return `${architectureVisual()}<h3>Architecture</h3><div class="workflow-grid">${["AI applications", "Orchestration", "Monetization", "AI agents and users"].map((item) => `<div class="workflow-card"><b>${item}</b><span class="muted">${architectureText(item)}</span></div>`).join("")}</div>`;
   }
   if (state.tab === "next") {
@@ -300,6 +303,10 @@ function architectureVisual() {
 
 function ragArchitectureVisual() {
   return `<figure class="demo-screen architecture-screen"><img src="./assets/rag-architecture.svg" alt="RAG architecture diagram showing indexing and generating flows" /></figure>`;
+}
+
+function mediaArchitectureVisual() {
+  return `<figure class="demo-screen architecture-screen"><img src="./assets/media-architecture.svg" alt="Multimedia intelligence architecture diagram showing video search and summarization pipeline" /></figure>`;
 }
 
 function barRows(rows) {
@@ -326,6 +333,16 @@ function ragArchitectureText(item) {
   return text[item];
 }
 
+function mediaArchitectureText(item) {
+  const text = {
+    "Media ingest": "Live cameras, archived video, images, audio, transcripts, documents, and metadata enter one governed pipeline.",
+    "Visual understanding": "Scene sampling, OCR, speech transcription, object detection, captions, and embeddings turn media into searchable context.",
+    "Hybrid retrieval": "Vector, metadata, graph, and event stores retrieve clips, frames, transcripts, and source evidence together.",
+    "Agent actions": "Agents summarize, answer questions, verify alerts, route incidents, and trigger factory or business workflows."
+  };
+  return text[item];
+}
+
 function panelCopy(demoKey, tab) {
   const copy = {
     rag: {
@@ -348,7 +365,8 @@ function panelCopy(demoKey, tab) {
       overview: "A multimodal intelligence flow for images, video, audio, OCR, transcripts, and metadata.",
       extract: "Scene frames, speech, text, entities, and labels become searchable chunks.",
       search: "One query can find moments, documents, frames, and evidence across media types.",
-      govern: "Policy tags, lineage, and access controls follow the indexed content."
+      govern: "Policy tags, lineage, and access controls follow the indexed content.",
+      architecture: "A VSS-style architecture connects media sources, extraction services, hybrid retrieval, and agent workflows."
     }
   };
   return copy[demoKey]?.[tab] || "A guided step showing how the AI factory pipeline turns enterprise data into operational AI.";
