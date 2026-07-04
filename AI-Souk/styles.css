@@ -119,6 +119,9 @@ button { cursor: pointer; }
 .eyebrow { font: 900 13px var(--mono); letter-spacing: 3px; color: #5d5a52; text-transform: uppercase; }
 h1 { margin: 12px 0 10px; font-size: 40px; line-height: 1.04; letter-spacing: 0; }
 p.lead { color: var(--muted); font-size: 19px; line-height: 1.45; max-width: 1120px; margin: 0; }
+.crisis-status-line { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; flex-wrap:wrap; max-width:1280px; }
+.crisis-status-line .lead { flex:1 1 520px; }
+.crisis-status-line .status-pill { height:42px; flex:0 0 auto; }
 
 .map-screen { position: relative; height: calc(100vh - 136px); overflow: hidden; }
 .map {
@@ -258,8 +261,8 @@ p.lead { color: var(--muted); font-size: 19px; line-height: 1.45; max-width: 112
 .ask-hero { width:100%; max-width:960px; margin-top:0; }
 .ask-hero h1 { font-size:40px; margin-top:18px; }
 .prompt-grid { display:grid; grid-template-columns: repeat(2, minmax(260px, 1fr)); gap:12px; margin-top:36px; }
-.prompt-chip { height:44px; border:1px solid var(--line); background:#f0eee5; border-radius:23px; display:flex; align-items:center; gap:12px; padding:0 18px; overflow:hidden; }
-.prompt-chip span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.prompt-chip { min-height:50px; border:1px solid var(--line); background:#f0eee5; border-radius:23px; display:flex; align-items:center; gap:12px; padding:9px 18px; overflow:visible; text-align:left; }
+.prompt-chip span { white-space:normal; overflow:visible; text-overflow:clip; line-height:1.25; }
 .composer { margin-top:auto; width:100%; max-width:960px; }
 .composer-box { height:74px; border:1px solid var(--line); border-radius:16px; background:#fbfaf6; display:grid; grid-template-columns:1fr 50px; align-items:center; padding:0 12px 0 18px; }
 .composer input { border:0; background:transparent; outline:0; font-size:17px; }
@@ -267,7 +270,7 @@ p.lead { color: var(--muted); font-size: 19px; line-height: 1.45; max-width: 112
 .composer-meta { display:flex; justify-content:space-between; padding:12px 8px 0; font: 12px var(--mono); color:#625f58; letter-spacing:1px; }
 
 .tabs { display:flex; gap:8px; margin: 26px 0 12px; align-items:center; }
-.tab { height:38px; padding:0 16px; border:1px solid var(--line); border-radius:7px; background:#fbfaf6; display:flex; align-items:center; gap:8px; font-weight:700; }
+.tab { min-height:38px; padding:8px 16px; border:1px solid var(--line); border-radius:7px; background:#fbfaf6; display:flex; align-items:center; gap:8px; font-weight:700; line-height:1.2; }
 .tab.active { border-color:var(--gold); box-shadow: inset 0 -2px 0 rgba(208,154,0,.3); }
 .crisis-grid { display:grid; grid-template-columns: 410px 1fr 470px; gap:24px; }
 .stack { display:grid; gap:16px; align-content:start; }
@@ -290,7 +293,7 @@ p.lead { color: var(--muted); font-size: 19px; line-height: 1.45; max-width: 112
 .score.good { background:#d8e7d1; color:#38944a; } .score.warn { background:#f1e5c8; color:#c39100; } .score.bad { background:#f2cec9; color:#f13a33; }
 .districts { display:grid; grid-template-columns: repeat(5, minmax(170px, 1fr)); gap:16px; margin-top:32px; }
 .district-card { border:1px solid var(--line); border-radius:8px; background:#f4f2ea; padding:18px; }
-.district-card h3 { margin:8px 0 14px; font-size:18px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.district-card h3 { margin:8px 0 14px; font-size:18px; white-space:normal; overflow:visible; text-overflow:clip; line-height:1.22; }
 .money { font:900 22px var(--mono); }
 
 .board { display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:18px; }
