@@ -133,11 +133,16 @@ function icon(name, size = 20) {
 }
 
 function currentRoute() {
-  return (location.hash.replace("#/", "") || "home").split("?")[0];
+  return (location.hash.replace("#/", "") || "splash").split("?")[0];
 }
 
 function render() {
   const route = currentRoute();
+  if (route === "splash") {
+    document.getElementById("app").innerHTML = splashScreen();
+    lucide.createIcons();
+    return;
+  }
   document.getElementById("app").innerHTML = `
     <div class="app">
       ${topbar()}
@@ -158,6 +163,40 @@ function render() {
       render();
     });
   });
+}
+
+function splashScreen() {
+  const sectors = [
+    ["Citizens", "Identity, mobility, care", "Users"],
+    ["Enterprises", "APIs, tolling, licensing", "Building2"],
+    ["Police", "Safety, NCEMA, evidence", "Shield"],
+    ["Healthcare", "Population health services", "HeartPulse"],
+    ["Regional Gov", "Shared platforms", "Landmark"],
+    ["GDP Growth", "Productivity uplift", "TrendingUp"],
+  ];
+  return `<section class="splash-screen">
+    <div class="splash-map">
+      <div class="splash-coast"></div>
+      <div class="splash-grid"></div>
+      <div class="splash-orbit o1"></div><div class="splash-orbit o2"></div><div class="splash-orbit o3"></div>
+      <div class="splash-hub"><span>AEGI</span><b>RevenueOS</b><small>measurable service impact</small></div>
+      ${sectors.map((s, i) => `<div class="splash-node n${i}">${icon(s[2],20)}<b>${s[0]}</b><span>${s[1]}</span></div>`).join("")}
+    </div>
+    <div class="splash-copy">
+      <div class="eyebrow">MONETIZE360 · NATIONAL OPERATING LAYER</div>
+      <h1>Revenue OS - AI control tower for the Nation with AEGI</h1>
+      <p class="splash-mission">To be the operating system for revenue in a world where every useful service amplifies human potential, every service is measurable as a critical KPI, and every usage creates high-experience impact for all human enterprises.</p>
+      <div class="splash-metrics">
+        <div><b>AED 2.4T</b><span>national productivity model</span></div>
+        <div><b>501B</b><span>AI Souk revenue pool</span></div>
+        <div><b>24/7</b><span>sovereign control tower</span></div>
+      </div>
+      <div class="splash-actions">
+        <a class="splash-enter" href="#/home">${icon("ArrowRight",18)} Enter Control Tower</a>
+        <a class="splash-secondary" href="#/revenue">${icon("CircleDollarSign",18)} Open AI Souk</a>
+      </div>
+    </div>
+  </section>`;
 }
 
 function topbar() {
