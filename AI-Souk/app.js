@@ -316,31 +316,26 @@ function congestionScreen() {
     ["05", "Act", "Signal + route control", "Sparkles"],
   ];
   const corridors = [
-    ["E11 Abu Dhabi-Dubai", "104 km/h", "AED 44.8B", "Normal"],
-    ["E311 freight diversion", "82 km/h", "AED 18.4B", "Watch"],
-    ["KIZAD/Jebel Ali logistics", "76 km/h", "AED 27.2B", "High"],
+    ["E22 Abu Dhabi-Al Ain Road", "88 km/h", "AED 31.6B", "High"],
+    ["E611 key interchanges", "76 km/h", "AED 27.2B", "Watch"],
+    ["E11/E311 Dubai-bound relief", "104 km/h", "AED 44.8B", "Normal"],
   ];
-  const corridorDots = Array.from({ length: 52 }, (_, i) => `<span class="corridor-dot d${i % 4}" style="left:${15 + i * 1.35}%;top:${68 - i * .76 + Math.sin(i) * 2.3}%"></span>`).join("");
   return `<section class="screen pad congestion-screen">
     <div class="eyebrow">CONGESTION</div>
     <h1>Congestion Flow & Tolling Control</h1>
     <p class="lead">Video and license-capture signals help DMT reduce congestion, price access fairly, and settle toll revenue through the AI Souk revenue-sharing gateway powered by RevenueOS from Monetize360.</p>
     <div class="congestion-layout">
       <div class="card congestion-map-card">
-        <div class="card-head">${icon("Map",18)} LIVE DUBAI ↔ ABU DHABI CORRIDORS <span class="tag green">FLOW IMPROVING</span></div>
-        <div class="traffic-map uae-corridor-map">
-          <div class="gulf"></div><div class="desert"></div><div class="coast"></div>
-          <div class="city-node abu-dhabi">${icon("Landmark",18)}<b>Abu Dhabi</b><span>DMT control</span></div>
-          <div class="city-node dubai">${icon("Building2",18)}<b>Dubai</b><span>RTA / logistics</span></div>
-          <div class="route-line route-e11"><span>E11 Sheikh Zayed Rd</span></div><div class="route-line route-e311"><span>E311 freight relief</span></div><div class="route-line route-e611"><span>E611 bypass</span></div>
-          ${corridorDots}
-          <div class="gantry g1">${icon("Camera",16)} ALPR</div><div class="gantry g2">${icon("BadgeDollarSign",16)} TOLL</div><div class="gantry g3">${icon("TrafficCone",16)} FLOW</div>
-          <div class="traffic-kpi"><b>18%</b><span>delay reduction</span></div>
+        <div class="card-head">${icon("Map",18)} LIVE ABU DHABI CORRIDORS <span class="tag green">FLOW IMPROVING</span></div>
+        <div class="traffic-map corridor-image-panel">
+          <img src="./assets/snips/abu-dhabi-traffic-corridors.png" alt="Historical Abu Dhabi traffic corridors and potential monetization map covering E11, E22, E30, E311, and E611" />
+          <div class="corridor-assumption e22">${icon("Route",16)} <b>E22</b><span>Abu Dhabi-Al Ain Road · high-volume industrial flow</span></div>
+          <div class="corridor-assumption e611">${icon("BadgeDollarSign",16)} <b>E611</b><span>Bypass interchanges · regional congestion relief</span></div>
         </div>
       </div>
       <div class="stack">
         <div class="card"><div class="card-head">REVENUEOS SETTLEMENT</div><div class="card-body"><div class="large-number">AED 96B</div><p>Modeled annual corridor value from dynamic tolling, commercial fleet access, parking zones, and event-day congestion pricing.</p></div></div>
-        <div class="card"><div class="card-head">FLOW OUTCOME</div><div class="metric-row"><div class="metric"><strong>23 min</strong><small>Peak trip saved</small></div><div class="metric"><strong>41%</strong><small>Queue spillback cut</small></div><div class="metric"><strong>99.6%</strong><small>Plate confidence</small></div></div></div>
+        <div class="card"><div class="card-head">FLOW OUTCOME</div><div class="metric-row"><div class="metric"><strong>22-28%</strong><small>Delay reduction</small></div><div class="metric"><strong>E22</strong><small>Industrial flow</small></div><div class="metric"><strong>E611</strong><small>Bypass relief</small></div></div></div>
       </div>
     </div>
     <div class="video-action card">
@@ -376,7 +371,7 @@ function congestionScreen() {
         ["EXECUTIVE ROI", "What is the ROI of scaling image-based tolling city-wide?"]
       ].map(p=>`<div><span class="tag green">${p[0]}</span><p>${p[1]}</p></div>`).join("")}</div>
     </div>
-    <div class="share-table card"><div class="card-head">CONGESTION CORRIDOR QUEUE <span>SPEED · VALUE · POSTURE</span></div>${corridors.map((r) => `<div class="share-row"><div><b>${r[0]}</b><div class="sub">image/video license capture tolling · AI Souk settlement</div></div><strong>${r[1]}</strong><span class="tag ${r[3] === "High" ? "" : r[3] === "Watch" ? "gold" : "green"}">${r[3]}</span></div>`).join("")}</div>
+    <div class="share-table card"><div class="card-head">TOLLABLE CORRIDOR QUEUE <span>SPEED · VALUE · POSTURE</span></div>${corridors.map((r) => `<div class="share-row"><div><b>${r[0]}</b><div class="sub">image/video license capture tolling · AI Souk settlement · RevenueOS posting</div></div><strong>${r[1]}</strong><span class="tag ${r[3] === "High" ? "" : r[3] === "Watch" ? "gold" : "green"}">${r[3]}</span></div>`).join("")}</div>
   </section>`;
 }
 
