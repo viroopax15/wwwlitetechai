@@ -9,7 +9,7 @@ const nav = [
   ["CyberSecurity Threats", "cyber", "ShieldAlert"],
   ["Citizen Pulse", "pulse", "Activity"],
   ["Inter-Governmental", "intergov", "Network"],
-  ["Congestion", "departments", "TrafficCone"],
+  ["CongestionDEPT", "CongestionDEPT", "TrafficCone"],
   ["Reports", "reports", "ChartBar"],
   ["Documents", "documents", "FileText"],
   ["Audit Log", "audit", "ClipboardList"],
@@ -210,7 +210,7 @@ function screen(route) {
   if (route === "housing") return genericScreen("Safer Housing", "Safer Housing Pipeline", "Track blocked safer-housing and worker-accommodation projects, municipality-owned parcels, and permit bottlenecks relevant to Abu Dhabi.", housingCards());
   if (route === "pulse") return genericScreen("Citizen Pulse", "Abu Dhabi Briefing", "Relevant stories, resident signals, and AI-suggested City Hall responses.", pulseCards());
   if (route === "intergov") return genericScreen("Inter-Governmental", "Funding & Agency Coordination", "UAE, emirate, authority, and regional partner items that need executive attention.", intergovCards());
-  if (route === "departments") return congestionScreen();
+  if (route === "CongestionDEPT" || route === "departments") return congestionScreen();
   if (route === "reports") return genericScreen("Reports", "Generated Reports", "Prepared briefs, anomaly reports, and exports ready for staff circulation.", reportCards());
   if (route === "documents") return genericScreen("Documents", "Document Intelligence", "Uploaded budgets, ordinances, grant memos, and supporting records indexed for Ask AI Control Tower.", documentCards());
   return genericScreen("Audit Log", "Tool-Call Audit", "Trace every AI answer back to tool calls, retrieved records, and operator actions.", auditCards());
