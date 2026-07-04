@@ -316,19 +316,24 @@ function congestionScreen() {
     ["05", "Act", "Signal + route control", "Sparkles"],
   ];
   const corridors = [
-    ["Mussafah freight gate", "34 km/h", "AED 18.4B", "High"],
-    ["Corniche event cordon", "42 km/h", "AED 7.2B", "Watch"],
-    ["Al Maryah bridge pair", "51 km/h", "AED 11.8B", "Normal"],
+    ["E11 Abu Dhabi-Dubai", "104 km/h", "AED 44.8B", "Normal"],
+    ["E311 freight diversion", "82 km/h", "AED 18.4B", "Watch"],
+    ["KIZAD/Jebel Ali logistics", "76 km/h", "AED 27.2B", "High"],
   ];
+  const corridorDots = Array.from({ length: 52 }, (_, i) => `<span class="corridor-dot d${i % 4}" style="left:${15 + i * 1.35}%;top:${68 - i * .76 + Math.sin(i) * 2.3}%"></span>`).join("");
   return `<section class="screen pad congestion-screen">
     <div class="eyebrow">CONGESTION</div>
     <h1>Congestion Flow & Tolling Control</h1>
     <p class="lead">Video and license-capture signals help DMT reduce congestion, price access fairly, and settle toll revenue through the AI Souk revenue-sharing gateway powered by RevenueOS from Monetize360.</p>
     <div class="congestion-layout">
       <div class="card congestion-map-card">
-        <div class="card-head">${icon("Map",18)} LIVE ABU DHABI CORRIDORS <span class="tag green">FLOW IMPROVING</span></div>
-        <div class="traffic-map">${baseMap("green-points")}
-          <div class="route-line route-red"></div><div class="route-line route-gold"></div><div class="route-line route-green"></div>
+        <div class="card-head">${icon("Map",18)} LIVE DUBAI ↔ ABU DHABI CORRIDORS <span class="tag green">FLOW IMPROVING</span></div>
+        <div class="traffic-map uae-corridor-map">
+          <div class="gulf"></div><div class="desert"></div><div class="coast"></div>
+          <div class="city-node abu-dhabi">${icon("Landmark",18)}<b>Abu Dhabi</b><span>DMT control</span></div>
+          <div class="city-node dubai">${icon("Building2",18)}<b>Dubai</b><span>RTA / logistics</span></div>
+          <div class="route-line route-e11"><span>E11 Sheikh Zayed Rd</span></div><div class="route-line route-e311"><span>E311 freight relief</span></div><div class="route-line route-e611"><span>E611 bypass</span></div>
+          ${corridorDots}
           <div class="gantry g1">${icon("Camera",16)} ALPR</div><div class="gantry g2">${icon("BadgeDollarSign",16)} TOLL</div><div class="gantry g3">${icon("TrafficCone",16)} FLOW</div>
           <div class="traffic-kpi"><b>18%</b><span>delay reduction</span></div>
         </div>
@@ -367,7 +372,7 @@ function congestionScreen() {
       </div>
       <div class="sim-prompts"><div class="eyebrow">SMART ASSIST · NATURAL-LANGUAGE QUESTIONS</div>${[
         ["SIM SIMULATION", "What if we extend eastbound green by 15s on this corridor?"],
-        ["VIDEO SEARCH", "Show queue-spike events at this gantry over the last 30 days."],
+        ["VIDEO / VLM SEARCH", "Show queue-spike events at this gantry over the last 30 days."],
         ["EXECUTIVE ROI", "What is the ROI of scaling image-based tolling city-wide?"]
       ].map(p=>`<div><span class="tag green">${p[0]}</span><p>${p[1]}</p></div>`).join("")}</div>
     </div>
