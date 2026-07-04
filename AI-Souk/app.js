@@ -51,6 +51,8 @@ const tasks = [
   ["URGENT", "GRANT DEADLINE (AUTO)", "Grant 6d to deadline: Coastal Resilience Funding Package", "Authority submission deadline 2026-06-15 with AED 45.2B allocation.", "Environment Agency"],
 ];
 
+let mapLayersOpen = false;
+
 function icon(name, size = 20) {
   return `<i data-lucide="${name}" style="width:${size}px;height:${size}px"></i>`;
 }
@@ -74,6 +76,12 @@ function render() {
   lucide.createIcons();
   document.querySelectorAll("[data-route]").forEach((el) => {
     el.addEventListener("click", () => { location.hash = `#/${el.dataset.route}`; });
+  });
+  document.querySelectorAll("[data-toggle-layers]").forEach((el) => {
+    el.addEventListener("click", () => {
+      mapLayersOpen = !mapLayersOpen;
+      render();
+    });
   });
 }
 
@@ -139,9 +147,10 @@ function baseMap(extra = "") {
 }
 
 function homeScreen() {
-  return `<section class="screen map-screen">
+  return `<section class="screen map-screen ${mapLayersOpen ? "layers-open" : ""}">
     ${baseMap("blue-points")}
     <div class="weather">${icon("SunMedium",23)}<b>39°C</b><span>Hot And Humid Conditions</span><span class="tag gold">Alert</span></div>
+    <button class="map-layer-toggle" data-toggle-layers>${icon("Layers",18)} Map Layers</button>
     ${briefPanel()}
     ${layersPanel()}
     <aside class="ops">
@@ -169,7 +178,7 @@ function briefPanel() {
 }
 
 function layersPanel() {
-  return `<section class="layers"><div class="panel-head">${icon("Layers",18)} MAP LAYERS</div>${layers.map(l => `<div class="layer"><i class="dot ${l[3]}"></i><div><b>${l[0]}</b><small>${l[1]}</small></div><span>${l[2]}</span><span class="toggle ${l[4] ? "on" : ""}"></span></div>`).join("")}</section>`;
+  return `<section class="layers"><div class="panel-head">${icon("Layers",18)} MAP LAYERS <button class="panel-close" data-toggle-layers aria-label="Close map layers">${icon("X",16)}</button></div>${layers.map(l => `<div class="layer"><i class="dot ${l[3]}"></i><div><b>${l[0]}</b><small>${l[1]}</small></div><span>${l[2]}</span><span class="toggle ${l[4] ? "on" : ""}"></span></div>`).join("")}</section>`;
 }
 
 function askScreen() {
@@ -196,7 +205,7 @@ function crisisScreen() {
     <div class="tabs"><span class="eyebrow">HAZARD LENS</span>${["Heat","Tide","Dust","Civil Defence 997","800 555"].map((t,i)=>`<button class="tab ${i===0?"active":""}">${icon(["Thermometer","Waves","Wind","ShieldCheck","Activity"][i],16)} ${t}</button>`).join("")}</div>
     <div class="crisis-grid">
       <div class="stack"><div class="card" style="border-color:var(--green)"><div class="card-head" style="color:var(--green)">${icon("ShieldCheck",18)} HEAT · MONITORING</div><div class="card-body"><h2>Summer heat protocol active</h2><p class="lead" style="font-size:16px">NCM conditions monitored · outreach ready for outdoor workers and transit stops</p></div></div><div class="card"><div class="card-head">BUILDING SAFETY · LIFE SAFETY</div><div class="metric-row"><div class="metric"><strong style="color:var(--red)">0</strong><small>Overdue</small></div><div class="metric"><strong style="color:var(--red)">0</strong><small>Failed reports</small></div></div><div class="card-body"><b>View building list →</b></div></div><div class="card"><div class="card-head">TRIGGERS MONITORED</div>${["NCM heat index advisory|ALERT","Coastal tide threshold|OK","Dust visibility below threshold|OK","Civil Defence readiness spike|OK"].map(x=>{const [a,b]=x.split("|");return `<div class="audit-row"><span>${a}</span><b>${b}</b></div>`}).join("")}</div></div>
-      <div class="mini-map">${baseMap("green-points")}${layersPanel()}<div class="map-controls"><span class="square">+</span><span class="square">−</span><span class="square">${icon("Navigation",20)}</span><span class="square">${icon("Layers",20)}</span></div></div>
+      <div class="mini-map ${mapLayersOpen ? "layers-open" : ""}">${baseMap("green-points")}<button class="map-layer-toggle compact" data-toggle-layers>${icon("Layers",18)} Map Layers</button>${layersPanel()}<div class="map-controls"><span class="square">+</span><span class="square">−</span><span class="square">${icon("Navigation",20)}</span><span class="square">${icon("Layers",20)}</span></div></div>
       <div class="card"><div class="card-head">ICS READINESS CHECKLIST</div><div class="card-body"><p class="lead" style="font-size:16px">Toggle status to advance items. Updates audit-logged with your user and timestamp.</p><div class="tabs"><span class="eyebrow">18 OF 18</span><span style="margin-left:auto" class="eyebrow">MINE &nbsp; ${icon("Filter",15)} FILTERS</span><button class="tab">+ ADD</button></div></div>${["Activate EOC at Level 2 and notify department heads","Stage staff at primary shelters and verify ADA accessibility","Confirm fuel reserves at Fire/Police facilities (≥7 days)","Push heat advisory outreach to NET offices"].map(t=>`<div class="check-item"><span>${icon("Circle",18)}</span><div><b>${t}</b><div class="sub">City Manager Reyes · City ...</div></div><span class="eyebrow">PENDING</span><b>···</b></div>`).join("")}</div>
     </div>
     <div class="bottom-cards">${["COOLING CENTERS|1,510 CAP|Cultural Foundation|240", "EVACUATION PICKUPS|8 SITES|Pickup readiness brief →|", "ADDC OUTAGES|ACTIVE|105 customers out|1 active incident", "CRITICAL FACILITIES · HAZARD EXPOSURE||Hospitals 9|Coastal 2 · Heat 3 · SLR '50 9"].map(c=>{const p=c.split("|");return `<div class="card"><div class="card-head">${p[0]} <span>${p[1]}</span></div><div class="card-body"><h3>${p[2]}</h3><p>${p[3]}</p></div></div>`}).join("")}</div>

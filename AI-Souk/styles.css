@@ -182,9 +182,42 @@ p.lead { color: var(--muted); font-size: 19px; line-height: 1.45; max-width: 112
   font-size: 20px;
 }
 .weather b { font-size: 21px; }
+.map-layer-toggle {
+  position: absolute;
+  z-index: 22;
+  top: 82px;
+  right: 24px;
+  height: 42px;
+  padding: 0 15px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(250,249,244,.92);
+  box-shadow: var(--shadow);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font: 800 12px var(--mono);
+  letter-spacing: 1.7px;
+  text-transform: uppercase;
+  color: #4f4c45;
+}
+.map-layer-toggle.compact { top: 18px; right: 18px; }
 .layers {
   position: absolute; top: 24px; right: 460px; width: 360px; max-height: calc(100% - 52px); overflow:auto;
   border: 1px solid var(--line); border-radius: 8px; background: rgba(250,249,244,.9); box-shadow: var(--shadow); backdrop-filter: blur(10px);
+  display: none;
+}
+.layers-open > .layers { display: block; }
+.panel-close {
+  margin-left: auto;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fbfaf6;
+  display: inline-grid;
+  place-items: center;
+  color: var(--muted);
 }
 .layer { display:grid; grid-template-columns: 16px 1fr 70px 46px; gap: 10px; align-items:center; padding: 13px 18px; border-bottom:1px solid rgba(221,217,204,.65); }
 .layer b { white-space: nowrap; overflow:hidden; text-overflow: ellipsis; }
@@ -239,7 +272,7 @@ p.lead { color: var(--muted); font-size: 19px; line-height: 1.45; max-width: 112
 .card-body h2 { font-size:27px; margin: 0 0 12px; }
 .mini-map { min-height:520px; border:1px solid var(--line); border-radius:8px; overflow:hidden; position:relative; background:#dfded5; }
 .mini-map .map { inset:0; }
-.mini-map .layers { right:24px; top:24px; width:350px; max-height:360px; }
+.mini-map .layers { right:24px; top:72px; width:350px; max-height:360px; }
 .map-controls { position:absolute; left:16px; bottom:18px; display:grid; gap:6px; }
 .square { width:44px; height:44px; border:1px solid var(--line); border-radius:6px; background:#fbfaf6; display:grid; place-items:center; font-size:24px; font-weight:900; }
 .bottom-cards { display:grid; grid-template-columns: repeat(4, minmax(190px, 1fr)); gap:16px; margin-top:22px; }
@@ -315,6 +348,7 @@ p.lead { color: var(--muted); font-size: 19px; line-height: 1.45; max-width: 112
   .shell, .ask-screen { grid-template-columns: 1fr; }
   .side { display:none; }
   .brief-panel, .layers, .ops, .weather { position:relative; inset:auto; transform:none; width:auto; margin:16px; max-height:none; }
+  .map-layer-toggle { position:relative; inset:auto; margin:16px; }
   .map-screen { height:auto; min-height:900px; overflow:auto; padding-top:1px; }
   .map, .water, .points, .label { position:absolute; height:900px; }
   .crisis-grid, .bottom-cards, .districts, .board, .generic-grid, .prompt-grid, .cyber-layout, .revenue-hero, .ecosystem-grid { grid-template-columns:1fr; }
