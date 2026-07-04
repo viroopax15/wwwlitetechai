@@ -1,12 +1,12 @@
 const nav = [
   ["Command Center", "home", "House"],
-  ["Ask AI Mayor", "ask", "MessageSquare"],
+  ["Ask AI Control Tower", "ask", "MessageSquare"],
   ["Crisis Operations", "crisis", "TriangleAlert"],
   ["Action Items", "actions", "SquareCheck"],
-  ["Affordable Housing", "housing", "Building2"],
+  ["AI Souk", "revenue", "CircleDollarSign"],
+  ["Safer Housing", "housing", "Building2"],
   ["Equity Dashboard", "equity", "Scale"],
   ["CyberSecurity Threats", "cyber", "ShieldAlert"],
-  ["AI Souk", "revenue", "CircleDollarSign"],
   ["Citizen Pulse", "pulse", "Activity"],
   ["Inter-Governmental", "intergov", "Network"],
   ["Departments", "departments", "Landmark"],
@@ -46,12 +46,87 @@ const stories = [
 ];
 
 const tasks = [
-  ["URGENT", "ANOMALY (AUTO)", "Critical anomaly: Generator readiness gap at 3 EOC backup facilities", "Quarterly load test flagged 3 backup generators below the 72-hour readiness threshold.", "Civil Defence"],
+  ["URGENT", "ANOMALY (AUTO)", "Critical anomaly: Generator readiness gap at 3 NCEMA backup facilities", "Quarterly load test flagged 3 backup generators below the 72-hour readiness threshold.", "Civil Defence"],
   ["URGENT", "KPI REGRESSION (AUTO)", "KPI regression: anomaly value at risk ↑ 8.8σ", "Anomaly value at risk = AED 60.06B today vs 30-day mean AED 2.19B.", "Office of Management & Budget"],
   ["URGENT", "GRANT DEADLINE (AUTO)", "Grant 6d to deadline: Coastal Resilience Funding Package", "Authority submission deadline 2026-06-15 with AED 45.2B allocation.", "Environment Agency"],
 ];
 
 let mapLayersOpen = false;
+const runtime = {
+  dateLabel: "",
+  weather: {
+    temp: "--",
+    high: "--",
+    low: "--",
+    summary: "Updating Local Conditions",
+    icon: "CloudSun",
+    alert: "Live",
+  },
+};
+
+function updateClock() {
+  runtime.dateLabel = new Intl.DateTimeFormat(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date());
+  const dateEl = document.querySelector("[data-live-date]");
+  if (dateEl) dateEl.textContent = runtime.dateLabel;
+}
+
+function weatherCodeSummary(code, apparent) {
+  if ([95, 96, 99].includes(code)) return ["Thunderstorm Watch", "CloudLightning", "Alert"];
+  if ([61, 63, 65, 80, 81, 82].includes(code)) return ["Rain Showers", "CloudRain", "Watch"];
+  if ([45, 48].includes(code)) return ["Haze And Low Visibility", "CloudFog", "Watch"];
+  if (apparent >= 40) return ["Hot And Humid Conditions", "SunMedium", "Alert"];
+  if (apparent >= 34) return ["Warm And Humid", "SunMedium", "Watch"];
+  return ["Clear Local Conditions", "SunMedium", "Live"];
+}
+
+async function updateWeather() {
+  try {
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=24.4539&longitude=54.3773&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code&daily=temperature_2m_max,temperature_2m_min&forecast_days=1&timezone=auto";
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) throw new Error(`weather ${response.status}`);
+    const payload = await response.json();
+    const current = payload.current || {};
+    const daily = payload.daily || {};
+    const apparent = Number(current.apparent_temperature ?? current.temperature_2m ?? 39);
+    const [summary, iconName, alert] = weatherCodeSummary(Number(current.weather_code || 0), apparent);
+    runtime.weather = {
+      temp: Math.round(Number(current.temperature_2m ?? apparent)),
+      high: Math.round(Number(daily.temperature_2m_max?.[0] ?? apparent + 4)),
+      low: Math.round(Number(daily.temperature_2m_min?.[0] ?? apparent - 6)),
+      summary,
+      icon: iconName,
+      alert,
+    };
+  } catch {
+    const month = new Date().getMonth();
+    runtime.weather = {
+      temp: month >= 4 && month <= 9 ? 39 : 29,
+      high: month >= 4 && month <= 9 ? 42 : 31,
+      low: month >= 4 && month <= 9 ? 31 : 21,
+      summary: month >= 4 && month <= 9 ? "Hot And Humid Conditions" : "Clear Local Conditions",
+      icon: "SunMedium",
+      alert: month >= 4 && month <= 9 ? "Alert" : "Live",
+    };
+  }
+  render();
+}
+
+function dailyBriefCopy() {
+  const { high, low, summary } = runtime.weather;
+  const highText = high === "--" ? "updating" : `${high}°C`;
+  const lowText = low === "--" ? "updating" : `${low}°C`;
+  const summerPeak = high === "--" ? 45 : Math.max(44, high + 3);
+  const condition = summary === "Updating Local Conditions" ? "Local weather conditions" : `${summary.toLowerCase()} conditions`;
+  const sentenceStart = condition.charAt(0).toUpperCase() + condition.slice(1);
+  return `${sentenceStart} are being monitored across the urban core today, with an expected daytime high of ${highText} and an overnight low near ${lowText}. During peak summer windows, the city should plan for heat spikes up to about ${summerPeak}°C in exposed districts, especially around industrial corridors, inland work sites, and low-shade transit areas. The city remains in normal operations with enhanced heat-safety monitoring, while permit review queues continue to loom large in several zones above the 60-day target.`;
+}
 
 function icon(name, size = 20) {
   return `<i data-lucide="${name}" style="width:${size}px;height:${size}px"></i>`;
@@ -90,11 +165,11 @@ function topbar() {
     <header class="topbar">
       <a class="brand" href="#/home">
         <div class="seal"></div>
-        <div><div class="brand-title">AI MAYOR · CITY OF ABU DHABI</div></div>
+        <div><div class="brand-title">AI CONTROL TOWER · CITY OF ABU DHABI</div></div>
       </a>
-      <div class="date">Saturday, July 4, 2026</div>
+      <div class="date" data-live-date>${runtime.dateLabel}</div>
       <div class="top-actions">
-        <button class="search-pill" data-route="ask">${icon("Search",18)}<span>Ask AI Mayor...</span><span class="keycap">/</span></button>
+        <button class="search-pill" data-route="ask">${icon("Search",18)}<span>Ask AI Control Tower...</span><span class="keycap">/</span></button>
         <button class="status-pill">${icon("ShieldCheck",17)} NORMAL</button>
         <button class="icon-btn">${icon("Bell",20)}<span class="badge">99+</span></button>
         <button class="avatar" onclick="document.body.classList.toggle('show-account')">CO</button>
@@ -108,9 +183,9 @@ function topbar() {
 }
 
 function promiseStrip() {
-  const colors = ["red","gold","olive","olive","olive","green","green","green","green","green","green","green"];
+  const colors = ["gold","olive","olive","olive","olive","olive","olive","green","green","green","green","green"];
   return `<section class="promise">
-    <div class="promise-title">100-DAY PROMISES</div>
+    <div class="promise-title">DMT : The UAE Promise</div>
     <div class="promise-bars">${colors.map(c => `<span class="bar ${c}"></span>`).join("")}</div>
     <div class="legend"><span><i class="dot red"></i>1 SLIPPING</span><span><i class="dot gold"></i>1 AT RISK</span><span><i class="dot olive"></i>3 ON TRACK</span><span><i class="dot"></i>7 DELIVERED</span></div>
   </section>`;
@@ -132,12 +207,12 @@ function screen(route) {
   if (route === "cyber") return cyberScreen();
   if (route === "revenue") return revenueScreen();
   if (route === "actions") return actionsScreen();
-  if (route === "housing") return genericScreen("Affordable Housing", "Housing Pipeline", "Track blocked affordable and workforce housing projects, city-owned parcels, and permit bottlenecks.", housingCards());
+  if (route === "housing") return genericScreen("Safer Housing", "Safer Housing Pipeline", "Track blocked safer-housing and worker-accommodation projects, municipality-owned parcels, and permit bottlenecks relevant to Abu Dhabi.", housingCards());
   if (route === "pulse") return genericScreen("Citizen Pulse", "Abu Dhabi Briefing", "Relevant stories, resident signals, and AI-suggested City Hall responses.", pulseCards());
   if (route === "intergov") return genericScreen("Inter-Governmental", "Funding & Agency Coordination", "UAE, emirate, authority, and regional partner items that need executive attention.", intergovCards());
   if (route === "departments") return genericScreen("Departments", "Operating Departments", "Service levels, open anomalies, and action queues by department.", departmentCards());
   if (route === "reports") return genericScreen("Reports", "Generated Reports", "Prepared briefs, anomaly reports, and exports ready for staff circulation.", reportCards());
-  if (route === "documents") return genericScreen("Documents", "Document Intelligence", "Uploaded budgets, ordinances, grant memos, and supporting records indexed for Ask AI Mayor.", documentCards());
+  if (route === "documents") return genericScreen("Documents", "Document Intelligence", "Uploaded budgets, ordinances, grant memos, and supporting records indexed for Ask AI Control Tower.", documentCards());
   return genericScreen("Audit Log", "Tool-Call Audit", "Trace every AI answer back to tool calls, retrieved records, and operator actions.", auditCards());
 }
 
@@ -149,7 +224,7 @@ function baseMap(extra = "") {
 function homeScreen() {
   return `<section class="screen map-screen ${mapLayersOpen ? "layers-open" : ""}">
     ${baseMap("blue-points")}
-    <div class="weather">${icon("SunMedium",23)}<b>39°C</b><span>Hot And Humid Conditions</span><span class="tag gold">Alert</span></div>
+    <div class="weather">${icon(runtime.weather.icon,23)}<b>${runtime.weather.temp}°C</b><span>${runtime.weather.summary}</span><span class="tag ${runtime.weather.alert === "Alert" ? "gold" : "green"}">${runtime.weather.alert}</span></div>
     <button class="map-layer-toggle" data-toggle-layers>${icon("Layers",18)} Map Layers</button>
     ${briefPanel()}
     ${layersPanel()}
@@ -166,11 +241,11 @@ function homeScreen() {
 
 function briefPanel() {
   return `<section class="brief-panel">
-    <div class="panel-head">${icon("Sparkles",18)} MAYOR'S DAILY BRIEF</div>
-    <div class="brief-copy"><h2>Good morning, City of Abu Dhabi.</h2><p>Heat index readings are elevated across the urban core with no immediate severe-weather threat; the city remains in normal operations with enhanced heat-safety monitoring. Permit review queues continue to loom large, with several zones above the 60-day target.</p></div>
+    <div class="panel-head">${icon("Sparkles",18)} DIRECTOR GENERAL (DMT) DAILY BRIEF</div>
+    <div class="brief-copy"><h2>Good morning, City of Abu Dhabi.</h2><p>${dailyBriefCopy()}</p></div>
     <div class="brief-list">
       ${signals.map(([kind, code, title]) => `<a class="signal" href="#/ask"><span class="tag ${kind === "priority" ? "gold" : kind === "signal" ? "blue" : kind === "win" ? "green" : ""}">${kind}</span><span class="code">${code}</span><b>${title}</b></a>`).join("")}
-      <a class="ask-link" href="#/ask">${icon("Sparkles",18)} Ask AI Mayor about today ↗</a>
+      <a class="ask-link" href="#/ask">${icon("Sparkles",18)} Ask AI Control Tower about today ↗</a>
     </div>
     <div class="panel-head">ABU DHABI BRIEFING <a href="#/pulse" style="margin-left:auto;letter-spacing:0;font-family:var(--sans);text-transform:none">Open Citizen Pulse ↗</a></div>
     <div class="brief-list briefing"><div><span class="tag gold">High · 7</span> <span class="tag blue">Moderate · 5</span></div><p>12 stories relevant to City Hall today.</p>${stories.map(s => `<a class="signal" href="#/ask"><span class="dot gold"></span><span class="tag gold">${s[0]}</span> <span class="tag gray">${s[1]}</span> <span class="tag blue">${s[2]}</span><b>${s[3]}</b><div class="sub">${s[4]}</div></a>`).join("")}<a class="ask-link" href="#/ask">${icon("Sparkles",18)} Ask ↗</a></div>
@@ -182,8 +257,12 @@ function layersPanel() {
 }
 
 function askScreen() {
-  const threads = ["Tell me about housing projec...", "Explain building permit AD18...", "What permitting restrictions ...", "Show me police calls in this ...", "Explain anomaly anom-2026...", "Brief me on resilience fund...", "Brief me on Civil Defence.", "Where are residents most fr...", "What authority funding are we l..."];
+  const threads = ["Brief me on NCEMA crisis control...", "Set up a local UCP for flash flooding...", "Tell me about safer housing...", "Explain building permit AD18...", "What permitting restrictions ...", "Show me police calls in this ...", "Explain anomaly anom-2026...", "Brief me on resilience fund...", "Brief me on Civil Defence.", "Where are residents most fr...", "What authority funding are we l..."];
   const prompts = [
+    ["ShieldAlert", "What should DMT activate if NCEMA escalates today?"],
+    ["RadioTower", "Build a Unified Command Post plan for Abu Dhabi"],
+    ["Truck", "When should we deploy a Mobile Crisis Operations Unit?"],
+    ["Siren", "Flash flooding: local police + municipality command steps"],
     ["Compass", 'Walk me through "heat index watch across Abu Dhabi..."'],
     ["OctagonAlert", "Explain anomaly anom-2026-011"],
     ["Waves", "Sea-level rise: coastal asset exposure by 2030?"],
@@ -195,18 +274,18 @@ function askScreen() {
   ];
   return `<section class="screen ask-screen">
     <aside class="history"><button class="new-chat">${icon("Plus")} New conversation</button><input placeholder="Search..." />${threads.map(t => `<div class="thread">${icon("MessageSquare",16)}<span>${t}</span></div>`).join("")}<div class="view-audit">VIEW TOOL-CALL AUDIT →</div></aside>
-    <div class="ask-stage"><div class="ask-hero"><div class="eyebrow">ASK AI MAYOR</div><h1>Good morning, City of Abu Dhabi.</h1><p class="lead">Ask any operational question about Abu Dhabi. Real tool calls against Supabase, NCM, municipal services, transport feeds, Census-style indicators, and your uploaded documents will appear in the trace below the answer.</p><div class="prompt-grid">${prompts.map(p => `<button class="prompt-chip">${icon(p[0],18)}<span>${p[1]}</span></button>`).join("")}</div></div><div class="composer"><div class="composer-box"><input placeholder="Ask AI Mayor about today's data, documents, weather, bills..." /><button class="send">${icon("ArrowUp")}</button></div><div class="composer-meta"><span>${icon("ShieldCheck",14)} AI MAYOR · City AI · Sovereign Mode</span><span>Enter to send · Shift+Enter for newline</span></div></div></div>
+    <div class="ask-stage"><div class="ask-hero"><div class="eyebrow">ASK AI CONTROL TOWER</div><h1>Good morning, City of Abu Dhabi.</h1><p class="lead">Ask any operational question about Abu Dhabi. Real tool calls against Supabase, NCM, municipal services, transport feeds, Census-style indicators, and your uploaded documents will appear in the trace below the answer.</p><div class="prompt-grid">${prompts.map(p => `<button class="prompt-chip">${icon(p[0],18)}<span>${p[1]}</span></button>`).join("")}</div></div><div class="composer"><div class="composer-box"><input placeholder="Ask AI Control Tower about today's data, documents, weather, bills..." /><button class="send">${icon("ArrowUp")}</button></div><div class="composer-meta"><span>${icon("ShieldCheck",14)} AI CONTROL TOWER · City AI · Sovereign Mode</span><span>Enter to send · Shift+Enter for newline</span></div></div></div>
   </section>`;
 }
 
 function crisisScreen() {
   return `<section class="screen pad">
-    <div class="eyebrow">CRISIS OPERATIONS</div><h1>EOC Surface</h1><p class="lead"><b class="eyebrow">POSTURE · NORMAL</b> Heat index watch active · coastal humidity monitored · 18 ICS items pending <span class="status-pill" style="float:right;height:42px">● NORMAL</span></p>
+    <div class="eyebrow">CRISIS OPERATIONS</div><h1>NCEMA Surface</h1><p class="lead"><b class="eyebrow">POSTURE · NORMAL</b> Heat index watch active · coastal humidity monitored · 18 ICS items pending <span class="status-pill" style="float:right;height:42px">● NORMAL</span></p>
     <div class="tabs"><span class="eyebrow">HAZARD LENS</span>${["Heat","Tide","Dust","Civil Defence 997","800 555"].map((t,i)=>`<button class="tab ${i===0?"active":""}">${icon(["Thermometer","Waves","Wind","ShieldCheck","Activity"][i],16)} ${t}</button>`).join("")}</div>
     <div class="crisis-grid">
       <div class="stack"><div class="card" style="border-color:var(--green)"><div class="card-head" style="color:var(--green)">${icon("ShieldCheck",18)} HEAT · MONITORING</div><div class="card-body"><h2>Summer heat protocol active</h2><p class="lead" style="font-size:16px">NCM conditions monitored · outreach ready for outdoor workers and transit stops</p></div></div><div class="card"><div class="card-head">BUILDING SAFETY · LIFE SAFETY</div><div class="metric-row"><div class="metric"><strong style="color:var(--red)">0</strong><small>Overdue</small></div><div class="metric"><strong style="color:var(--red)">0</strong><small>Failed reports</small></div></div><div class="card-body"><b>View building list →</b></div></div><div class="card"><div class="card-head">TRIGGERS MONITORED</div>${["NCM heat index advisory|ALERT","Coastal tide threshold|OK","Dust visibility below threshold|OK","Civil Defence readiness spike|OK"].map(x=>{const [a,b]=x.split("|");return `<div class="audit-row"><span>${a}</span><b>${b}</b></div>`}).join("")}</div></div>
       <div class="mini-map ${mapLayersOpen ? "layers-open" : ""}">${baseMap("green-points")}<button class="map-layer-toggle compact" data-toggle-layers>${icon("Layers",18)} Map Layers</button>${layersPanel()}<div class="map-controls"><span class="square">+</span><span class="square">−</span><span class="square">${icon("Navigation",20)}</span><span class="square">${icon("Layers",20)}</span></div></div>
-      <div class="card"><div class="card-head">ICS READINESS CHECKLIST</div><div class="card-body"><p class="lead" style="font-size:16px">Toggle status to advance items. Updates audit-logged with your user and timestamp.</p><div class="tabs"><span class="eyebrow">18 OF 18</span><span style="margin-left:auto" class="eyebrow">MINE &nbsp; ${icon("Filter",15)} FILTERS</span><button class="tab">+ ADD</button></div></div>${["Activate EOC at Level 2 and notify department heads","Stage staff at primary shelters and verify ADA accessibility","Confirm fuel reserves at Fire/Police facilities (≥7 days)","Push heat advisory outreach to NET offices"].map(t=>`<div class="check-item"><span>${icon("Circle",18)}</span><div><b>${t}</b><div class="sub">City Manager Reyes · City ...</div></div><span class="eyebrow">PENDING</span><b>···</b></div>`).join("")}</div>
+      <div class="card"><div class="card-head">ICS READINESS CHECKLIST</div><div class="card-body"><p class="lead" style="font-size:16px">Toggle status to advance items. Updates audit-logged with your user and timestamp.</p><div class="tabs"><span class="eyebrow">18 OF 18</span><span style="margin-left:auto" class="eyebrow">MINE &nbsp; ${icon("Filter",15)} FILTERS</span><button class="tab">+ ADD</button></div></div>${["Activate NCEMA Level 2 coordination and notify department heads","Stage staff at primary shelters and verify ADA accessibility","Confirm fuel reserves at Fire/Police facilities (≥7 days)","Push heat advisory outreach to NET offices"].map(t=>`<div class="check-item"><span>${icon("Circle",18)}</span><div><b>${t}</b><div class="sub">City Manager Reyes · City ...</div></div><span class="eyebrow">PENDING</span><b>···</b></div>`).join("")}</div>
     </div>
     <div class="bottom-cards">${["COOLING CENTERS|1,510 CAP|Cultural Foundation|240", "EVACUATION PICKUPS|8 SITES|Pickup readiness brief →|", "ADDC OUTAGES|ACTIVE|105 customers out|1 active incident", "CRITICAL FACILITIES · HAZARD EXPOSURE||Hospitals 9|Coastal 2 · Heat 3 · SLR '50 9"].map(c=>{const p=c.split("|");return `<div class="card"><div class="card-head">${p[0]} <span>${p[1]}</span></div><div class="card-body"><h3>${p[2]}</h3><p>${p[3]}</p></div></div>`}).join("")}</div>
   </section>`;
@@ -225,7 +304,7 @@ function equityScreen() {
 }
 
 function actionsScreen() {
-  return `<section class="screen pad"><div style="display:flex;justify-content:space-between;gap:20px"><div><div class="eyebrow">OPERATIONS INBOX</div><h1>Action Items</h1><p class="lead">Every “Track this” click across the platform lands here. Filter, reassign, mark complete, or surface to AI Mayor for the next concrete step.</p></div><div class="legend" style="align-items:end"><span><b class="large-number">91</b> OPEN</span><span><b class="large-number">1</b> IN PROGRESS</span><span><b class="large-number" style="color:var(--green)">0</b> OVERDUE</span><span><b class="large-number">92</b> TOTAL</span></div></div><div class="filters">${["Urgent","High","Normal","Low","Anomaly (auto)","Ask AI Mayor","Code case (auto)","Crisis checklist","Equity dashboard","ADDC outage (auto)","Grant deadline (auto)","KPI regression (auto)","Police hot-spot (auto)"].map(f=>`<span class="filter">${f}</span>`).join("")}</div><div class="board"><div class="column"><div class="card-head"><span><i class="dot red"></i> OPEN</span><span>91</span></div>${tasks.map(taskCard).join("")}</div><div class="column"><div class="card-head"><span><i class="dot gold"></i> IN PROGRESS</span><span>1</span></div>${taskCard(["URGENT","EQUITY DASHBOARD","Schedule weekly equity review with Equity Officer","Equity Officer · no due date","Equity Officer"])}</div><div class="column"><div class="card-head"><span><i class="dot green"></i> COMPLETED / DISMISSED</span><span>0</span></div><div class="card-body" style="text-align:center;color:var(--muted)">Nothing here.</div></div></div></section>`;
+  return `<section class="screen pad"><div style="display:flex;justify-content:space-between;gap:20px"><div><div class="eyebrow">OPERATIONS INBOX</div><h1>Action Items</h1><p class="lead">Every “Track this” click across the platform lands here. Filter, reassign, mark complete, or surface to AI Control Tower for the next concrete step.</p></div><div class="legend" style="align-items:end"><span><b class="large-number">91</b> OPEN</span><span><b class="large-number">1</b> IN PROGRESS</span><span><b class="large-number" style="color:var(--green)">0</b> OVERDUE</span><span><b class="large-number">92</b> TOTAL</span></div></div><div class="filters">${["Urgent","High","Normal","Low","Anomaly (auto)","Ask AI Control Tower","Code case (auto)","Crisis checklist","Equity dashboard","ADDC outage (auto)","Grant deadline (auto)","KPI regression (auto)","Police hot-spot (auto)"].map(f=>`<span class="filter">${f}</span>`).join("")}</div><div class="board"><div class="column"><div class="card-head"><span><i class="dot red"></i> OPEN</span><span>91</span></div>${tasks.map(taskCard).join("")}</div><div class="column"><div class="card-head"><span><i class="dot gold"></i> IN PROGRESS</span><span>1</span></div>${taskCard(["URGENT","EQUITY DASHBOARD","Schedule weekly equity review with Equity Officer","Equity Officer · no due date","Equity Officer"])}</div><div class="column"><div class="card-head"><span><i class="dot green"></i> COMPLETED / DISMISSED</span><span>0</span></div><div class="card-body" style="text-align:center;color:var(--muted)">Nothing here.</div></div></div></section>`;
 }
 
 function cyberScreen() {
@@ -254,7 +333,7 @@ function cyberScreen() {
       </div>
       <div class="stack">
         <div class="card"><div class="card-head">MISSION IMPACT</div><div class="metric-row"><div class="metric"><strong>99.98%</strong><small>Citizen services uptime</small></div><div class="metric"><strong style="color:var(--red)">2</strong><small>Critical incidents</small></div><div class="metric"><strong>AED 8.7B</strong><small>Exposure avoided</small></div></div></div>
-        <div class="card"><div class="card-head">AI RECOMMENDED RESPONSE</div><div class="card-body"><h2>Isolate healthcare exchange anomalies before business hours</h2><p>Prioritize endpoint isolation for two clinics, rotate enterprise API tokens, and brief City Police cyber liaison on the phishing cluster.</p><button class="tab" data-route="ask">${icon("Sparkles",16)} Ask AI Mayor for incident brief</button></div></div>
+        <div class="card"><div class="card-head">AI RECOMMENDED RESPONSE</div><div class="card-body"><h2>Isolate healthcare exchange anomalies before business hours</h2><p>Prioritize endpoint isolation for two clinics, rotate enterprise API tokens, and brief City Police cyber liaison on the phishing cluster.</p><button class="tab" data-route="ask">${icon("Sparkles",16)} Ask AI Control Tower for incident brief</button></div></div>
       </div>
     </div>
     <div class="threat-table card"><div class="card-head">ACTIVE THREAT QUEUE <span>OWNER · RESPONSE</span></div>${threatRows.map((r) => `<div class="audit-row threat-row"><div><b>${r[0]}</b><div class="sub">${r[1]} · ${r[3]}</div></div><span class="tag ${r[2] === "Critical" ? "" : r[2] === "High" || r[2] === "Elevated" ? "gold" : "green"}">${r[2]}</span><button class="tab">${r[4]}</button></div>`).join("")}</div>
@@ -304,7 +383,7 @@ function ecosystemCards(mode) {
 }
 
 function taskCard(t) {
-  return `<div class="task"><div><span class="tag">${t[0]}</span> <span class="tag gray">${t[1]}</span></div><h3>${t[2]}</h3><p>${t[3]}</p><div class="sub">${icon("Users",14)} ${t[4]} &nbsp; ${icon("Calendar",14)} due Invalid Date</div><div class="tabs" style="margin:12px 0 0"><button class="tab">Open</button><button class="tab"><i class="dot red"></i>Urgent</button><button class="tab" data-route="ask">Ask AI Mayor</button></div></div>`;
+  return `<div class="task"><div><span class="tag">${t[0]}</span> <span class="tag gray">${t[1]}</span></div><h3>${t[2]}</h3><p>${t[3]}</p><div class="sub">${icon("Users",14)} ${t[4]} &nbsp; ${icon("Calendar",14)} due Invalid Date</div><div class="tabs" style="margin:12px 0 0"><button class="tab">Open</button><button class="tab"><i class="dot red"></i>Urgent</button><button class="tab" data-route="ask">Ask AI Control Tower</button></div></div>`;
 }
 
 function genericScreen(eyebrow, title, lead, cards) {
@@ -312,14 +391,14 @@ function genericScreen(eyebrow, title, lead, cards) {
 }
 
 function simpleCard(title, num, body, tag = "NORMAL") {
-  return `<div class="card"><div class="card-head">${title}<span class="tag ${tag === "ALERT" ? "gold" : tag === "URGENT" ? "" : "green"}">${tag}</span></div><div class="card-body"><div class="large-number">${num}</div><p>${body}</p><button class="tab" data-route="ask">${icon("Sparkles",16)} Ask AI Mayor</button></div></div>`;
+  return `<div class="card"><div class="card-head">${title}<span class="tag ${tag === "ALERT" ? "gold" : tag === "URGENT" ? "" : "green"}">${tag}</span></div><div class="card-body"><div class="large-number">${num}</div><p>${body}</p><button class="tab" data-route="ask">${icon("Sparkles",16)} Ask AI Control Tower</button></div></div>`;
 }
-function housingCards(){ return [simpleCard("Pipeline Units","12,440","Active affordable, workforce, and mixed-income units across tracked projects."), simpleCard("Blocked Permits","37","Projects delayed by zoning, environmental, or inter-agency review.","ALERT"), simpleCard("City-Owned Parcels","54","Candidate parcels ranked for transit, flood, and equity fit.")].join("");}
+function housingCards(){ return [simpleCard("Safety-Ready Units","12,440","Active safer-housing, worker-accommodation, and mixed-use residential units across tracked projects."), simpleCard("Blocked Permits","37","Projects delayed by zoning, environmental, or inter-agency life-safety review.","ALERT"), simpleCard("Municipality Parcels","54","Candidate parcels ranked for transit access, heat exposure, coastal risk, and service-readiness fit.")].join("");}
 function pulseCards(){ return stories.map(s=>simpleCard(`${s[0]} · ${s[1]}`,s[2],`${s[3]} ${s[4]}`,s[0]==="HIGH"?"ALERT":"NORMAL")).join("");}
 function intergovCards(){ return [simpleCard("Authority Deadlines","6","Funding and agency responses due in the next 14 days.","ALERT"), simpleCard("Emirate Dependencies","18","Items awaiting authority action or data transfer."), simpleCard("UAE Watchlist","11","Regulatory and executive actions with city impact.")].join("");}
 function departmentCards(){ return [simpleCard("Civil Defence 997","3","Generator readiness and station coverage items require follow-up.","ALERT"), simpleCard("Public Realm","28,124","Code and infrastructure signals under weekly review."), simpleCard("Building Permits","213k","Permit backlog cases older than 90 days.","URGENT")].join("");}
 function reportCards(){ return [simpleCard("Budget Anomaly Report","Ready","Independent review packet prepared for publication."), simpleCard("Daily Brief PDF","Today","Executive-ready briefing generated from live city signals."), simpleCard("Equity Review","Draft","District matrix with AI narrative and action appendix.")].join("");}
-function documentCards(){ return [simpleCard("Indexed Files","148","Budgets, ordinances, memos, grants, and PDFs searchable by Ask AI Mayor."), simpleCard("New Uploads","9","Awaiting classification and summary."), simpleCard("Citations","2,931","Answer snippets trace back to document spans.")].join("");}
+function documentCards(){ return [simpleCard("Indexed Files","148","Budgets, ordinances, memos, grants, and PDFs searchable by Ask AI Control Tower."), simpleCard("New Uploads","9","Awaiting classification and summary."), simpleCard("Citations","2,931","Answer snippets trace back to document spans.")].join("");}
 function auditCards(){ return [simpleCard("Tool Calls","14,882","Supabase, NCM, municipal service feeds, transport data, and document retrieval traces."), simpleCard("User Actions","927","Status changes, exports, and assignments recorded."), simpleCard("System Health","Degraded","Map/weather latency detected in the last update window.","ALERT")].join("");}
 
 function scatterPoints() {
@@ -338,4 +417,8 @@ function scatterPoints() {
 }
 
 window.addEventListener("hashchange", render);
+updateClock();
 render();
+updateWeather();
+setInterval(updateClock, 60 * 1000);
+setInterval(updateWeather, 10 * 60 * 1000);

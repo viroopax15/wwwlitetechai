@@ -1,6 +1,6 @@
-# AI Mayor Demo Mirror
+# AI Control Tower Demo
 
-Static localhost-ready demo inspired by the referenced AI Mayor application.
+Static localhost-ready AI Control Tower demo for Abu Dhabi smart-city operations.
 
 ## Run locally
 
@@ -17,12 +17,12 @@ http://localhost:5173/
 ## Screens included
 
 - Command Center landing page with map, daily brief, map layers, alerts, account menu, and operational cards
-- Ask AI Mayor interface
-- Crisis Operations / EOC alert surface
+- Ask AI Control Tower interface
+- Crisis Operations / NCEMA alert surface
 - Action Items board
 - Equity Dashboard
 - CyberSecurity Threats surface
 - AI Souk ecosystem value-exchange model
-- Supporting pages for Housing, Citizen Pulse, Inter-Governmental, Departments, Reports, Documents, and Audit Log
+- Supporting pages for Safer Housing, Citizen Pulse, Inter-Governmental, Departments, Reports, Documents, and Audit Log
 
 No production credentials are stored in this project.
