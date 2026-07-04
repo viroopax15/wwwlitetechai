@@ -303,7 +303,7 @@ p.lead { color: var(--muted); font-size: 19px; line-height: 1.45; max-width: 112
 .generic-grid { display:grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap:18px; margin-top:30px; }
 .large-number { font:900 34px var(--mono); margin:4px 0; }
 
-.cyber-layout, .revenue-hero { display:grid; grid-template-columns: minmax(420px, 1.2fr) minmax(320px, .8fr); gap:18px; margin-top:30px; }
+.cyber-layout, .revenue-hero, .congestion-layout { display:grid; grid-template-columns: minmax(420px, 1.2fr) minmax(320px, .8fr); gap:18px; margin-top:30px; }
 .radar-stage {
   min-height: 420px;
   position: relative;
@@ -344,6 +344,67 @@ p.lead { color: var(--muted); font-size: 19px; line-height: 1.45; max-width: 112
 .share-row { display:grid; grid-template-columns: 1fr 140px 80px; gap:16px; align-items:center; padding:16px 18px; border-top:1px solid var(--line); }
 .share-row strong { font:900 20px var(--mono); }
 
+.congestion-map-card { overflow:hidden; }
+.traffic-map { position:relative; min-height:440px; overflow:hidden; background:#dfe4da; }
+.traffic-map .map { position:absolute; inset:0; }
+.traffic-map .tile-map { transform:translate(-50%, -50%) scale(.96); opacity:.72; filter:grayscale(.12) saturate(.72) contrast(.98); }
+.traffic-map .map-wash { background:rgba(247,246,240,.18); }
+.route-line { position:absolute; height:8px; border-radius:10px; box-shadow:0 0 0 3px rgba(255,255,255,.62), 0 8px 18px rgba(35,32,20,.16); transform-origin:left center; z-index:3; }
+.route-red { width:48%; left:18%; top:42%; background:var(--red); transform:rotate(-18deg); }
+.route-gold { width:42%; left:29%; top:58%; background:var(--gold); transform:rotate(9deg); }
+.route-green { width:54%; left:20%; top:71%; background:var(--green); transform:rotate(-6deg); }
+.gantry { position:absolute; z-index:5; min-width:86px; height:34px; padding:0 10px; border:1px solid var(--green-dark); border-radius:7px; background:rgba(250,249,244,.94); color:var(--green-dark); display:flex; align-items:center; gap:7px; font:900 11px var(--mono); letter-spacing:1px; box-shadow:var(--shadow); }
+.gantry.g1 { left:22%; top:33%; } .gantry.g2 { right:24%; top:53%; } .gantry.g3 { left:42%; bottom:17%; }
+.traffic-kpi { position:absolute; right:22px; bottom:22px; z-index:5; width:148px; border:1px solid var(--line); border-radius:8px; background:rgba(250,249,244,.94); padding:15px; box-shadow:var(--shadow); }
+.traffic-kpi b { display:block; font:900 34px var(--mono); color:var(--green-dark); }
+.traffic-kpi span { color:var(--muted); font:800 11px var(--mono); text-transform:uppercase; }
+.video-action { margin-top:18px; overflow:hidden; }
+.pipeline { display:grid; grid-template-columns:repeat(5, minmax(120px, 1fr)); gap:10px; padding:16px; background:#111715; }
+.pipe-step { position:relative; min-height:122px; border:1px solid rgba(82,214,92,.32); border-radius:8px; background:#1a201f; color:#f6f7f0; padding:14px; display:grid; align-content:start; gap:8px; }
+.pipe-step:not(:last-child)::after { content:"→"; position:absolute; right:-16px; top:44%; color:#62e665; font:900 25px var(--mono); z-index:2; }
+.pipe-step span { color:#a8b0aa; font:900 12px var(--mono); letter-spacing:2px; }
+.pipe-step i { color:#62e665; }
+.pipe-step b { font:900 15px var(--mono); letter-spacing:2px; text-transform:uppercase; }
+.pipe-step small { color:#62e665; font:900 11px var(--mono); letter-spacing:1.2px; text-transform:uppercase; }
+.video-grid { display:grid; grid-template-columns:minmax(360px, .9fr) 1fr; gap:18px; padding:18px; background:#f4f2ea; }
+.video-feed { position:relative; min-height:270px; overflow:hidden; border:1px solid var(--line); border-radius:8px; background:#222; }
+.feed-road { position:absolute; inset:0; background:
+    linear-gradient(24deg, transparent 0 45%, rgba(255,255,255,.8) 46% 47%, transparent 48%),
+    linear-gradient(154deg, transparent 0 43%, rgba(255,255,255,.75) 44% 45%, transparent 46%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 2px, transparent 2px 52px),
+    radial-gradient(circle at 25% 30%, rgba(255,255,255,.16), transparent 12%),
+    #51564f; }
+.feed-road::before, .feed-road::after { content:""; position:absolute; width:68px; height:32px; border-radius:8px; background:#f5f5f0; box-shadow:180px 70px 0 #202826, 260px 160px 0 #d8d0bd, 70px 170px 0 #15201b; transform:rotate(-18deg); left:80px; top:66px; }
+.feed-road::after { left:260px; top:38px; transform:rotate(16deg); opacity:.9; }
+.plate, .feed-tag { position:absolute; z-index:2; border-radius:7px; font:900 12px var(--mono); letter-spacing:1.2px; }
+.plate { left:18px; top:18px; background:#f8f7f2; color:#141814; padding:8px 10px; border:1px solid var(--line); }
+.feed-tag { left:18px; bottom:18px; background:#b7f58c; color:#102a20; padding:10px 12px; }
+.action-list { display:grid; gap:12px; }
+.action-list div { display:grid; grid-template-columns:34px 110px 1fr; align-items:center; gap:12px; border:1px solid var(--line); border-radius:8px; background:#fbfaf6; padding:14px; }
+.action-list i { color:var(--green-dark); }
+.action-list span { color:var(--muted); line-height:1.35; }
+.simulation-panel { margin-top:18px; overflow:hidden; }
+.simulation-grid { display:grid; grid-template-columns:minmax(460px, 1.45fr) minmax(300px, .55fr); gap:18px; padding:18px; background:#101514; }
+.simulation-shot { position:relative; min-height:360px; border:1px solid rgba(82,214,92,.32); border-radius:8px; overflow:hidden; background:#151a18; }
+.simulation-shot img { width:100%; height:100%; min-height:360px; object-fit:cover; display:block; filter:saturate(.92) contrast(1.02); }
+.sim-badge, .sim-status { position:absolute; z-index:2; border-radius:6px; font:900 12px var(--mono); letter-spacing:2px; text-transform:uppercase; }
+.sim-badge { top:18px; left:18px; background:rgba(17,23,21,.9); color:#dfffe0; border:1px solid rgba(82,214,92,.5); padding:10px 13px; }
+.sim-status { right:18px; bottom:18px; background:#b7f58c; color:#102a20; padding:10px 12px; }
+.simulation-side { display:grid; gap:14px; }
+.sim-card { border:1px solid rgba(82,214,92,.28); border-radius:8px; background:#181e1d; color:#e7ece5; padding:16px; }
+.sim-card .eyebrow, .sim-prompts .eyebrow { color:#62e665; }
+.sim-card p { margin:10px 0 0; color:#cfd5cf; line-height:1.45; }
+.plan-tabs { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-top:12px; }
+.plan-tabs span, .plan-tabs b { height:42px; border:1px solid rgba(82,214,92,.3); border-radius:5px; display:grid; place-items:center; font:900 13px var(--mono); letter-spacing:2px; text-transform:uppercase; }
+.plan-tabs b { background:#62e665; color:#102a20; border-color:#62e665; }
+.kpi-card > div:not(.eyebrow) { display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,.14); padding:9px 0; color:#cfd5cf; font-family:var(--mono); }
+.kpi-card > div:not(.eyebrow) b { color:#f7f8f0; }
+.kpi-card .tab { width:100%; margin-top:14px; justify-content:center; background:#222826; color:#cfd5cf; border-color:#222826; }
+.sim-prompts { display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; padding:16px; border-top:1px solid rgba(82,214,92,.28); background:#101514; }
+.sim-prompts .eyebrow { grid-column:1 / -1; }
+.sim-prompts div:not(.eyebrow) { border:1px solid rgba(82,214,92,.28); border-radius:7px; background:#181e1d; padding:13px; }
+.sim-prompts p { color:#eef2e9; margin:9px 0 0; line-height:1.35; }
+
 @media (max-width: 1100px) {
   .topbar { grid-template-columns: 1fr; height:auto; padding:16px; gap:10px; }
   .date { text-align:left; }
@@ -355,6 +416,6 @@ p.lead { color: var(--muted); font-size: 19px; line-height: 1.45; max-width: 112
   .map-layer-toggle { position:relative; inset:auto; margin:16px; }
   .map-screen { height:auto; min-height:900px; overflow:auto; padding-top:1px; }
   .map, .water, .points, .label { position:absolute; height:900px; }
-  .crisis-grid, .bottom-cards, .districts, .board, .generic-grid, .prompt-grid, .cyber-layout, .revenue-hero, .ecosystem-grid { grid-template-columns:1fr; }
+  .crisis-grid, .bottom-cards, .districts, .board, .generic-grid, .prompt-grid, .cyber-layout, .revenue-hero, .congestion-layout, .ecosystem-grid, .video-grid, .simulation-grid, .sim-prompts { grid-template-columns:1fr; }
   .screen.pad { padding:24px 18px; max-height:none; }
 }

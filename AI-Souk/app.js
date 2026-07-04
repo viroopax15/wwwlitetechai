@@ -9,7 +9,7 @@ const nav = [
   ["CyberSecurity Threats", "cyber", "ShieldAlert"],
   ["Citizen Pulse", "pulse", "Activity"],
   ["Inter-Governmental", "intergov", "Network"],
-  ["Departments", "departments", "Landmark"],
+  ["Congestion", "departments", "TrafficCone"],
   ["Reports", "reports", "ChartBar"],
   ["Documents", "documents", "FileText"],
   ["Audit Log", "audit", "ClipboardList"],
@@ -210,7 +210,7 @@ function screen(route) {
   if (route === "housing") return genericScreen("Safer Housing", "Safer Housing Pipeline", "Track blocked safer-housing and worker-accommodation projects, municipality-owned parcels, and permit bottlenecks relevant to Abu Dhabi.", housingCards());
   if (route === "pulse") return genericScreen("Citizen Pulse", "Abu Dhabi Briefing", "Relevant stories, resident signals, and AI-suggested City Hall responses.", pulseCards());
   if (route === "intergov") return genericScreen("Inter-Governmental", "Funding & Agency Coordination", "UAE, emirate, authority, and regional partner items that need executive attention.", intergovCards());
-  if (route === "departments") return genericScreen("Departments", "Operating Departments", "Service levels, open anomalies, and action queues by department.", departmentCards());
+  if (route === "departments") return congestionScreen();
   if (route === "reports") return genericScreen("Reports", "Generated Reports", "Prepared briefs, anomaly reports, and exports ready for staff circulation.", reportCards());
   if (route === "documents") return genericScreen("Documents", "Document Intelligence", "Uploaded budgets, ordinances, grant memos, and supporting records indexed for Ask AI Control Tower.", documentCards());
   return genericScreen("Audit Log", "Tool-Call Audit", "Trace every AI answer back to tool calls, retrieved records, and operator actions.", auditCards());
@@ -305,6 +305,74 @@ function equityScreen() {
 
 function actionsScreen() {
   return `<section class="screen pad"><div style="display:flex;justify-content:space-between;gap:20px"><div><div class="eyebrow">OPERATIONS INBOX</div><h1>Action Items</h1><p class="lead">Every “Track this” click across the platform lands here. Filter, reassign, mark complete, or surface to AI Control Tower for the next concrete step.</p></div><div class="legend" style="align-items:end"><span><b class="large-number">91</b> OPEN</span><span><b class="large-number">1</b> IN PROGRESS</span><span><b class="large-number" style="color:var(--green)">0</b> OVERDUE</span><span><b class="large-number">92</b> TOTAL</span></div></div><div class="filters">${["Urgent","High","Normal","Low","Anomaly (auto)","Ask AI Control Tower","Code case (auto)","Crisis checklist","Equity dashboard","ADDC outage (auto)","Grant deadline (auto)","KPI regression (auto)","Police hot-spot (auto)"].map(f=>`<span class="filter">${f}</span>`).join("")}</div><div class="board"><div class="column"><div class="card-head"><span><i class="dot red"></i> OPEN</span><span>91</span></div>${tasks.map(taskCard).join("")}</div><div class="column"><div class="card-head"><span><i class="dot gold"></i> IN PROGRESS</span><span>1</span></div>${taskCard(["URGENT","EQUITY DASHBOARD","Schedule weekly equity review with Equity Officer","Equity Officer · no due date","Equity Officer"])}</div><div class="column"><div class="card-head"><span><i class="dot green"></i> COMPLETED / DISMISSED</span><span>0</span></div><div class="card-body" style="text-align:center;color:var(--muted)">Nothing here.</div></div></div></section>`;
+}
+
+function congestionScreen() {
+  const pipeline = [
+    ["01", "Stream", "Video input", "Camera"],
+    ["02", "Detect", "Plate + vehicle class", "ScanLine"],
+    ["03", "Price", "Dynamic toll quote", "CircleDollarSign"],
+    ["04", "Settle", "RevenueOS ledger", "Database"],
+    ["05", "Act", "Signal + route control", "Sparkles"],
+  ];
+  const corridors = [
+    ["Mussafah freight gate", "34 km/h", "AED 18.4B", "High"],
+    ["Corniche event cordon", "42 km/h", "AED 7.2B", "Watch"],
+    ["Al Maryah bridge pair", "51 km/h", "AED 11.8B", "Normal"],
+  ];
+  return `<section class="screen pad congestion-screen">
+    <div class="eyebrow">CONGESTION</div>
+    <h1>Congestion Flow & Tolling Control</h1>
+    <p class="lead">Video and license-capture signals help DMT reduce congestion, price access fairly, and settle toll revenue through the AI Souk revenue-sharing gateway powered by RevenueOS from Monetize360.</p>
+    <div class="congestion-layout">
+      <div class="card congestion-map-card">
+        <div class="card-head">${icon("Map",18)} LIVE ABU DHABI CORRIDORS <span class="tag green">FLOW IMPROVING</span></div>
+        <div class="traffic-map">${baseMap("green-points")}
+          <div class="route-line route-red"></div><div class="route-line route-gold"></div><div class="route-line route-green"></div>
+          <div class="gantry g1">${icon("Camera",16)} ALPR</div><div class="gantry g2">${icon("BadgeDollarSign",16)} TOLL</div><div class="gantry g3">${icon("TrafficCone",16)} FLOW</div>
+          <div class="traffic-kpi"><b>18%</b><span>delay reduction</span></div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card"><div class="card-head">REVENUEOS SETTLEMENT</div><div class="card-body"><div class="large-number">AED 96B</div><p>Modeled annual corridor value from dynamic tolling, commercial fleet access, parking zones, and event-day congestion pricing.</p></div></div>
+        <div class="card"><div class="card-head">FLOW OUTCOME</div><div class="metric-row"><div class="metric"><strong>23 min</strong><small>Peak trip saved</small></div><div class="metric"><strong>41%</strong><small>Queue spillback cut</small></div><div class="metric"><strong>99.6%</strong><small>Plate confidence</small></div></div></div>
+      </div>
+    </div>
+    <div class="video-action card">
+      <div class="card-head">${icon("Cctv",18)} FROM VIDEO STREAM TO AGENT-READY ACTION <span>MONETIZE360 · REVENUEOS</span></div>
+      <div class="pipeline">${pipeline.map((p) => `<div class="pipe-step"><span>${p[0]}</span>${icon(p[3],22)}<b>${p[1]}</b><small>${p[2]}</small></div>`).join("")}</div>
+      <div class="video-grid">
+        <div class="video-feed"><div class="feed-road"></div><span class="plate">AD 12 · 88421</span><span class="feed-tag">REAL-TIME VIDEO INTELLIGENCE</span></div>
+        <div class="action-list">
+          <div>${icon("Eye",18)} <b>Capture</b><span>Vehicle + plate confidence streamed to evidence layer</span></div>
+          <div>${icon("Receipt",18)} <b>Charge</b><span>Dynamic toll posted into RevenueOS ledger</span></div>
+          <div>${icon("Network",18)} <b>Share</b><span>AI Souk gateway allocates DMT, police, operator, and enterprise revenue</span></div>
+          <div>${icon("Route",18)} <b>Optimize</b><span>Signals, route guidance, and toll bands update before queues form</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="simulation-panel card">
+      <div class="card-head">${icon("Play",18)} BEFORE ACTION, SIMULATE THE RESPONSE <span>INCHOR AI · ADVISORY MODE</span></div>
+      <div class="simulation-grid">
+        <div class="simulation-shot">
+          <img src="./assets/snips/congestion-simulation.png" alt="Congestion simulation showing aerial traffic response options and KPI planning" />
+          <span class="sim-badge">INCHOR AI SIMULATION</span>
+          <span class="sim-status">Engineer approval required</span>
+        </div>
+        <div class="simulation-side">
+          <div class="sim-card"><div class="eyebrow">INCHOR AI ROLE</div><p>Simulates candidate response options, compares per-plan KPIs, and keeps DMT engineers in the approval loop before execution.</p></div>
+          <div class="sim-card"><div class="eyebrow">PLAN SELECTOR</div><div class="plan-tabs"><span>Plan A</span><b>Plan B</b><span>Plan C</span></div><p>Plan B: extend eastbound green +15s and rebalance toll bands near the gantry pair.</p></div>
+          <div class="sim-card kpi-card"><div class="eyebrow">KPI COMPARISON</div>${[["Avg wait","61 s"],["Queue","74 m"],["Throughput","1,420"],["Spillback risk","Low"],["Revenue leakage","-8%"]].map(r=>`<div><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")}<button class="tab">ADVISORY · AWAITING ENGINEER APPROVAL</button></div>
+        </div>
+      </div>
+      <div class="sim-prompts"><div class="eyebrow">SMART ASSIST · NATURAL-LANGUAGE QUESTIONS</div>${[
+        ["SIM SIMULATION", "What if we extend eastbound green by 15s on this corridor?"],
+        ["VIDEO SEARCH", "Show queue-spike events at this gantry over the last 30 days."],
+        ["EXECUTIVE ROI", "What is the ROI of scaling image-based tolling city-wide?"]
+      ].map(p=>`<div><span class="tag green">${p[0]}</span><p>${p[1]}</p></div>`).join("")}</div>
+    </div>
+    <div class="share-table card"><div class="card-head">CONGESTION CORRIDOR QUEUE <span>SPEED · VALUE · POSTURE</span></div>${corridors.map((r) => `<div class="share-row"><div><b>${r[0]}</b><div class="sub">image/video license capture tolling · AI Souk settlement</div></div><strong>${r[1]}</strong><span class="tag ${r[3] === "High" ? "" : r[3] === "Watch" ? "gold" : "green"}">${r[3]}</span></div>`).join("")}</div>
+  </section>`;
 }
 
 function cyberScreen() {

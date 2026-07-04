@@ -23,6 +23,6 @@ http://localhost:5173/
 - Equity Dashboard
 - CyberSecurity Threats surface
 - AI Souk ecosystem value-exchange model
-- Supporting pages for Safer Housing, Citizen Pulse, Inter-Governmental, Departments, Reports, Documents, and Audit Log
+- Supporting pages for Safer Housing, Citizen Pulse, Inter-Governmental, Congestion, Reports, Documents, and Audit Log
 
 No production credentials are stored in this project.
