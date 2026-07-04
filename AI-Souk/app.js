@@ -329,12 +329,12 @@ function congestionScreen() {
         <div class="card-head">${icon("Map",18)} LIVE ABU DHABI CORRIDORS <span class="tag green">FLOW IMPROVING</span></div>
         <div class="traffic-map corridor-image-panel">
           <img src="./assets/snips/abu-dhabi-traffic-corridors.png" alt="Historical Abu Dhabi traffic corridors and potential monetization map covering E11, E22, E30, E311, and E611" />
-          <div class="corridor-assumption e22">${icon("Route",16)} <b>E22</b><span>Abu Dhabi-Al Ain Road · high-volume industrial flow</span></div>
-          <div class="corridor-assumption e611">${icon("BadgeDollarSign",16)} <b>E611</b><span>Bypass interchanges · regional congestion relief</span></div>
         </div>
       </div>
       <div class="stack">
         <div class="card"><div class="card-head">REVENUEOS SETTLEMENT</div><div class="card-body"><div class="large-number">AED 96B</div><p>Modeled annual corridor value from dynamic tolling, commercial fleet access, parking zones, and event-day congestion pricing.</p></div></div>
+        <div class="corridor-assumption">${icon("Route",18)} <b>E22</b><span>Abu Dhabi-Al Ain Road · high-volume industrial flow</span></div>
+        <div class="corridor-assumption">${icon("BadgeDollarSign",18)} <b>E611</b><span>Bypass interchanges · regional congestion relief</span></div>
         <div class="card"><div class="card-head">FLOW OUTCOME</div><div class="metric-row"><div class="metric"><strong>22-28%</strong><small>Delay reduction</small></div><div class="metric"><strong>E22</strong><small>Industrial flow</small></div><div class="metric"><strong>E611</strong><small>Bypass relief</small></div></div></div>
       </div>
     </div>

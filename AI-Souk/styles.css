@@ -348,11 +348,9 @@ p.lead { color: var(--muted); font-size: 19px; line-height: 1.45; max-width: 112
 .traffic-map { position:relative; min-height:440px; overflow:hidden; background:#dfe4da; }
 .corridor-image-panel { min-height:0; background:#efe8d6; display:grid; }
 .corridor-image-panel img { width:100%; height:auto; display:block; object-fit:contain; }
-.corridor-assumption { position:absolute; z-index:4; min-width:210px; max-width:280px; border:1px solid var(--green-dark); border-radius:8px; background:rgba(250,249,244,.94); color:var(--green-dark); padding:10px 12px; display:grid; grid-template-columns:24px 44px 1fr; gap:8px; align-items:center; box-shadow:var(--shadow); }
+.corridor-assumption { border:1px solid var(--green-dark); border-radius:8px; background:rgba(250,249,244,.96); color:var(--green-dark); padding:13px 14px; display:grid; grid-template-columns:28px 54px 1fr; gap:8px; align-items:center; box-shadow:0 8px 22px rgba(35,32,20,.08); }
 .corridor-assumption b { font:900 15px var(--mono); }
 .corridor-assumption span { grid-column:1 / -1; color:#343830; font-size:13px; line-height:1.25; }
-.corridor-assumption.e22 { left:24px; bottom:24px; }
-.corridor-assumption.e611 { right:24px; bottom:24px; }
 .uae-corridor-map {
   background:
     linear-gradient(24deg, transparent 0 22%, rgba(255,255,255,.44) 23% 24%, transparent 25%),
