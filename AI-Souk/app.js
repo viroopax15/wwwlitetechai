@@ -504,11 +504,18 @@ function scatterPoints() {
     [82, 82, 11, 10, 100], // Khalifa City / mainland communities
     [52, 83, 9, 8, 70],    // Musaffah / industrial services
     [72, 73, 9, 7, 70],    // inland municipal corridors
+    [69, 51, 5, 8, 64],     // Mina Zayed / port edge
+    [72, 42, 7, 7, 58],     // Al Reem and waterfront islands
+    [84, 33, 9, 8, 78],     // Saadiyat and coastal cultural assets
+    [95, 30, 5, 8, 42],     // Yas and eastern island edge
+    [91, 62, 8, 6, 54],     // E12 shoreline communities
   ];
   const corridors = [
     [50, 76, 86, 84, 60],
     [58, 66, 90, 49, 54],
     [45, 88, 73, 70, 42],
+    [66, 56, 96, 31, 58],
+    [70, 50, 92, 62, 46],
   ];
   const rand = (seed) => {
     const x = Math.sin(seed * 9301 + 49297) * 233280;
@@ -523,18 +530,18 @@ function scatterPoints() {
       for (let i = 0; i < count; i++, index++) {
         const angle = rand(index + clusterIndex * 17) * Math.PI * 2;
         const radius = Math.sqrt(rand(index + 311)) * 0.95;
-        const x = clamp(cx + Math.cos(angle) * rx * radius + (rand(index + 911) - 0.5) * 2.4, 42, 97);
-        const y = clamp(cy + Math.sin(angle) * ry * radius + (rand(index + 613) - 0.5) * 2.2, 34, 96);
-        const cls = green ? "green" : index % 31 === 0 ? "gold" : index % 47 === 0 ? "red" : "";
+        const x = clamp(cx + Math.cos(angle) * rx * radius + (rand(index + 911) - 0.5) * 2.4, 42, 98);
+        const y = clamp(cy + Math.sin(angle) * ry * radius + (rand(index + 613) - 0.5) * 2.2, 18, 96);
+        const cls = green ? "green" : index % 23 === 0 ? "red" : index % 13 === 0 ? "gold" : "";
         html += `<span class="point ${cls}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%"></span>`;
       }
     });
     corridors.forEach(([x1, y1, x2, y2, count]) => {
       for (let i = 0; i < count; i++, index++) {
         const t = (i + rand(index + 71) * 0.8) / count;
-        const x = clamp(x1 + (x2 - x1) * t + (rand(index + 19) - 0.5) * 3.4, 42, 97);
-        const y = clamp(y1 + (y2 - y1) * t + (rand(index + 23) - 0.5) * 3.2, 34, 96);
-        const cls = green ? "green" : i % 29 === 0 ? "gold" : i % 41 === 0 ? "red" : "";
+        const x = clamp(x1 + (x2 - x1) * t + (rand(index + 19) - 0.5) * 3.4, 42, 98);
+        const y = clamp(y1 + (y2 - y1) * t + (rand(index + 23) - 0.5) * 3.2, 18, 96);
+        const cls = green ? "green" : i % 19 === 0 ? "red" : i % 11 === 0 ? "gold" : "";
         html += `<span class="point ${cls}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%"></span>`;
       }
     });
