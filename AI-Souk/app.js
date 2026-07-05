@@ -9,7 +9,7 @@ const nav = [
   ["CyberSecurity Threats", "cyber", "ShieldAlert"],
   ["Citizen Pulse", "pulse", "Activity"],
   ["Inter-Governmental", "intergov", "Network"],
-  ["CongestionDEPT", "CongestionDEPT", "TrafficCone"],
+  ["Congestion", "CongestionDEPT", "TrafficCone"],
   ["Reports", "reports", "ChartBar"],
   ["Documents", "documents", "FileText"],
   ["Audit Log", "audit", "ClipboardList"],
