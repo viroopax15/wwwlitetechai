@@ -497,16 +497,47 @@ function documentCards(){ return [simpleCard("Indexed Files","148","Budgets, ord
 function auditCards(){ return [simpleCard("Tool Calls","14,882","Supabase, NCM, municipal service feeds, transport data, and document retrieval traces."), simpleCard("User Actions","927","Status changes, exports, and assignments recorded."), simpleCard("System Health","Degraded","Map/weather latency detected in the last update window.","ALERT")].join("");}
 
 function scatterPoints() {
+  const clusters = [
+    [62, 70, 10, 13, 150], // Abu Dhabi Island urban core
+    [76, 55, 7, 9, 95],    // Al Reem / Al Maryah
+    [88, 48, 8, 11, 80],   // Saadiyat / cultural district
+    [82, 82, 11, 10, 100], // Khalifa City / mainland communities
+    [52, 83, 9, 8, 70],    // Musaffah / industrial services
+    [72, 73, 9, 7, 70],    // inland municipal corridors
+  ];
+  const corridors = [
+    [50, 76, 86, 84, 60],
+    [58, 66, 90, 49, 54],
+    [45, 88, 73, 70, 42],
+  ];
+  const rand = (seed) => {
+    const x = Math.sin(seed * 9301 + 49297) * 233280;
+    return x - Math.floor(x);
+  };
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   document.querySelectorAll(".points").forEach((el) => {
     const green = el.classList.contains("green-points");
     let html = "";
-    for (let i = 0; i < 520; i++) {
-      const x = 28 + Math.random() * 34 + Math.sin(i) * 8;
-      const y = 4 + Math.random() * 74;
-      const cls = green ? "green" : i % 29 === 0 ? "gold" : i % 41 === 0 ? "red" : "";
-      html += `<span class="point ${cls}" style="left:${x}%;top:${y}%"></span>`;
-    }
-    for (let i = 0; i < 80; i++) html += `<span class="point ${green ? "green" : ""}" style="left:${56 + Math.random()*9}%;top:${6 + Math.random()*35}%"></span>`;
+    let index = 0;
+    clusters.forEach(([cx, cy, rx, ry, count], clusterIndex) => {
+      for (let i = 0; i < count; i++, index++) {
+        const angle = rand(index + clusterIndex * 17) * Math.PI * 2;
+        const radius = Math.sqrt(rand(index + 311)) * 0.95;
+        const x = clamp(cx + Math.cos(angle) * rx * radius + (rand(index + 911) - 0.5) * 2.4, 42, 97);
+        const y = clamp(cy + Math.sin(angle) * ry * radius + (rand(index + 613) - 0.5) * 2.2, 34, 96);
+        const cls = green ? "green" : index % 31 === 0 ? "gold" : index % 47 === 0 ? "red" : "";
+        html += `<span class="point ${cls}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%"></span>`;
+      }
+    });
+    corridors.forEach(([x1, y1, x2, y2, count]) => {
+      for (let i = 0; i < count; i++, index++) {
+        const t = (i + rand(index + 71) * 0.8) / count;
+        const x = clamp(x1 + (x2 - x1) * t + (rand(index + 19) - 0.5) * 3.4, 42, 97);
+        const y = clamp(y1 + (y2 - y1) * t + (rand(index + 23) - 0.5) * 3.2, 34, 96);
+        const cls = green ? "green" : i % 29 === 0 ? "gold" : i % 41 === 0 ? "red" : "";
+        html += `<span class="point ${cls}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%"></span>`;
+      }
+    });
     el.innerHTML = html;
   });
 }
